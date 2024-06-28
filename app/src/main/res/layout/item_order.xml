@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+
+        <variable
+            name="mainVM"
+            type="com.locnguyen.saleclothesapplication.viewmodel.MainVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tool="http://schemas.android.com/tools"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/background_white_rectangle_10dp_4_corners_1dp_blue_stroke">
+
+        <TextView
+            android:id="@+id/order_id"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="Mã đơn hàng"
+            android:textColor="@color/blue"
+            android:textSize="16sp"
+            android:fontFamily="@font/tinos_bold"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toStartOf="@id/order_value"
+            android:layout_marginHorizontal="10dp" />
+
+        <TextView
+            android:id="@+id/order_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            tool:text="1.000.000 đ"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:fontFamily="@font/tinos_bold"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/order_id"
+            app:layout_constraintBottom_toBottomOf="@id/order_payment_method"
+            android:layout_marginEnd="16dp" />
+
+        <TextView
+            android:id="@+id/order_date"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="Ngày đặt hàng"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_id"
+            app:layout_constraintTop_toBottomOf="@id/order_id"
+            app:layout_constraintEnd_toEndOf="@id/order_id"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/order_quantity"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="Số lượng món hàng"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_date"
+            app:layout_constraintTop_toBottomOf="@id/order_date"
+            app:layout_constraintEnd_toEndOf="@id/order_date"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/order_receiver"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="Người nhận hàng"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_quantity"
+            app:layout_constraintTop_toBottomOf="@id/order_quantity"
+            app:layout_constraintEnd_toEndOf="@id/order_quantity"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/order_phone"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="Số điện thoại"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_receiver"
+            app:layout_constraintTop_toBottomOf="@id/order_receiver"
+            app:layout_constraintEnd_toEndOf="@id/order_receiver"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/order_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="Địa chỉ"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_phone"
+            app:layout_constraintTop_toBottomOf="@id/order_phone"
+            app:layout_constraintEnd_toEndOf="@id/order_phone"
+            android:layout_marginTop="10dp" />
+
+        <TextView
+            android:id="@+id/order_payment_method"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tool:text="Phương thức thanh toán"
+            android:textColor="@color/black"
+            android:textSize="14sp"
+            app:layout_constraintStart_toStartOf="@id/order_address"
+            app:layout_constraintTop_toBottomOf="@id/order_address"
+            app:layout_constraintEnd_toEndOf="@id/order_address"
+            android:layout_marginTop="10dp" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/order_payment_method"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginVertical="25dp">
+
+            <ImageView
+                android:id="@+id/wait_handle"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:contentDescription="@string/State"
+            android:src="@drawable/oval_black"
+                android:layout_marginStart="20dp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <ImageView
+                android:id="@+id/wait_handle_exit_storage"
+                android:layout_width="50dp"
+                android:layout_height="3dp"
+                android:contentDescription="@string/State"
+                android:layout_gravity="center"
+                android:src="@drawable/line_black"
+                app:layout_constraintStart_toEndOf="@id/wait_handle"
+                app:layout_constraintTop_toTopOf="@id/wait_handle"
+                app:layout_constraintBottom_toBottomOf="@id/wait_handle"/>
+
+            <ImageView
+                android:id="@+id/exit_storage"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:contentDescription="@string/State"
+                android:src="@drawable/oval_black"
+                app:layout_constraintStart_toEndOf="@id/wait_handle_exit_storage"
+                app:layout_constraintTop_toTopOf="@id/wait_handle_exit_storage"
+                app:layout_constraintBottom_toBottomOf="@id/wait_handle_exit_storage"/>
+
+            <ImageView
+                android:id="@+id/exit_storage_shipping"
+                android:layout_width="50dp"
+                android:layout_height="3dp"
+                android:contentDescription="@string/State"
+                android:layout_gravity="center"
+                android:src="@drawable/line_black"
+                app:layout_constraintTop_toTopOf="@id/exit_storage"
+                app:layout_constraintStart_toEndOf="@id/exit_storage"
+                app:layout_constraintBottom_toBottomOf="@id/exit_storage"/>
+
+            <ImageView
+                android:id="@+id/shipping"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:contentDescription="@string/State"
+                android:src="@drawable/oval_black"
+                app:layout_constraintStart_toEndOf="@id/exit_storage_shipping"
+                app:layout_constraintTop_toTopOf="@id/exit_storage_shipping"
+                app:layout_constraintBottom_toBottomOf="@id/exit_storage_shipping"/>
+
+            <ImageView
+                android:id="@+id/shipping_come_address"
+                android:layout_width="50dp"
+                android:layout_height="3dp"
+                android:contentDescription="@string/State"
+                android:layout_gravity="center"
+                android:src="@drawable/line_black"
+                app:layout_constraintStart_toEndOf="@id/shipping"
+                app:layout_constraintTop_toTopOf="@id/shipping"
+                app:layout_constraintBottom_toBottomOf="@id/shipping"/>
+
+            <ImageView
+                android:id="@+id/come_address"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:contentDescription="@string/State"
+                android:src="@drawable/oval_black"
+                app:layout_constraintStart_toEndOf="@id/shipping_come_address"
+                app:layout_constraintTop_toTopOf="@id/shipping_come_address"
+                app:layout_constraintBottom_toBottomOf="@id/shipping_come_address"/>
+
+            <ImageView
+                android:id="@+id/come_address_paid"
+                android:layout_width="50dp"
+                android:layout_height="3dp"
+                android:contentDescription="@string/State"
+                android:layout_gravity="center"
+                android:src="@drawable/line_black"
+                app:layout_constraintStart_toEndOf="@id/come_address"
+                app:layout_constraintTop_toTopOf="@id/come_address"
+                app:layout_constraintBottom_toBottomOf="@id/come_address"/>
+
+            <ImageView
+                android:id="@+id/paid"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:contentDescription="@string/State"
+                android:src="@drawable/oval_black"
+                app:layout_constraintStart_toEndOf="@id/come_address_paid"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintTop_toTopOf="@id/come_address_paid"
+                app:layout_constraintBottom_toBottomOf="@id/come_address_paid"/>
+
+            <TextView
+                android:id="@+id/wait_handle_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Wait_handle"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/wait_handle"
+                app:layout_constraintStart_toStartOf="@id/wait_handle"
+                app:layout_constraintEnd_toEndOf="@id/wait_handle"/>
+
+            <TextView
+                android:id="@+id/exit_storage_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Exit_storage"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/exit_storage"
+                app:layout_constraintStart_toStartOf="@id/exit_storage"
+                app:layout_constraintEnd_toEndOf="@id/exit_storage"/>
+
+            <TextView
+                android:id="@+id/shipping_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Shipping"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/shipping"
+                app:layout_constraintStart_toStartOf="@id/shipping"
+                app:layout_constraintEnd_toEndOf="@id/shipping"/>
+
+            <TextView
+                android:id="@+id/come_address_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Come_address"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/come_address"
+                app:layout_constraintStart_toStartOf="@id/come_address"
+                app:layout_constraintEnd_toEndOf="@id/come_address"/>
+
+            <TextView
+                android:id="@+id/paid_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Paid"
+                android:textSize="11sp"
+                android:gravity="center"
+                android:textColor="@color/black"
+                android:layout_marginTop="10dp"
+                app:layout_constraintTop_toBottomOf="@id/paid"
+                app:layout_constraintStart_toStartOf="@id/paid"
+                app:layout_constraintEnd_toEndOf="@id/paid"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

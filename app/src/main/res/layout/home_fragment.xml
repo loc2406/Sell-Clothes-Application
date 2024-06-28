@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <data>
+        <variable
+            name="mainVM"
+            type="com.locnguyen.saleclothesapplication.viewmodel.MainVM" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_device">
+
+        <SearchView
+            android:id="@+id/search_bar"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/background_white_rectangle_10dp_4_corners_1dp_blue_stroke"
+            android:closeIcon="@drawable/ic_close_blue"
+            android:iconifiedByDefault="false"
+            android:paddingHorizontal="-10dp"
+            android:queryBackground="@android:color/transparent"
+            android:queryHint="Tìm kiếm quần áo"
+            android:searchIcon="@drawable/ic_search_blue"
+            android:theme="@style/MySearchView"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/list_clothes"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/search_bar"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginEnd="20dp"
+            android:layout_marginVertical="20dp"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

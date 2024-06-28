@@ -1,0 +1,189 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tool="http://schemas.android.com/tools">
+    <data>
+    </data>
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginStart="20dp"
+        app:cardCornerRadius="10dp"
+        app:cardElevation="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white">
+
+            <ImageView
+                android:id="@+id/clothes_img"
+                android:layout_width="0dp"
+                android:layout_height="200dp"
+                android:scaleType="centerCrop"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:contentDescription="@string/Clothes_img"/>
+
+            <TextView
+                android:id="@+id/clothes_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clothes_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/Clothes_name"
+                android:textSize="16sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/tinos_bold"
+                android:paddingHorizontal="10dp"
+                android:lines="2"
+                android:ellipsize="end"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp"
+                />
+
+            <TextView
+                android:id="@+id/clothes_group_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clothes_name"
+                android:text="@string/Group_title"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/tinos_regular"
+                android:paddingHorizontal="10dp"
+                android:lines="1"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp"/>
+
+            <ImageView
+                android:id="@+id/clothes_group_value"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/Clothes_group"
+                tool:src="@drawable/ic_male"
+                android:scaleType="centerCrop"
+                app:layout_constraintHorizontal_bias="0"
+                app:layout_constraintStart_toEndOf="@id/clothes_group_title"
+                app:layout_constraintTop_toTopOf="@id/clothes_group_title"
+                app:layout_constraintBottom_toBottomOf="@id/clothes_group_title"
+                app:layout_constraintEnd_toEndOf="parent"/>
+
+            <TextView
+                android:id="@+id/clothes_colors"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clothes_group_title"
+                android:text="@string/Color_title"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:fontFamily="@font/tinos_regular"
+                android:paddingHorizontal="10dp"
+                android:lines="1"
+                android:gravity="center_vertical"
+                android:layout_marginTop="8dp"/>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/first_color_space"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintStart_toEndOf="@id/clothes_colors"
+                app:layout_constraintTop_toTopOf="@id/clothes_colors"
+                app:layout_constraintEnd_toStartOf="@id/second_color_space"
+                app:layout_constraintBottom_toBottomOf="@id/clothes_colors">
+
+                <ImageView
+                    android:id="@+id/first_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/Clothes_color"
+                    tool:src="@color/red"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_transparent_oval_50dp_4_corners_1dp_black_stroke"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/second_color_space"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintStart_toEndOf="@id/first_color_space"
+                app:layout_constraintTop_toTopOf="@id/clothes_colors"
+                app:layout_constraintBottom_toBottomOf="@id/clothes_colors"
+                app:layout_constraintEnd_toStartOf="@id/third_color_space">
+
+                <ImageView
+                    android:id="@+id/second_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/Clothes_color"
+                    tool:src="@color/yellow"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_transparent_oval_50dp_4_corners_1dp_black_stroke"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/third_color_space"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                app:cardCornerRadius="20dp"
+                app:layout_constraintStart_toEndOf="@id/second_color_space"
+                app:layout_constraintTop_toTopOf="@id/clothes_colors"
+                app:layout_constraintBottom_toBottomOf="@id/clothes_colors"
+                app:layout_constraintEnd_toEndOf="parent">
+
+                <ImageView
+                    android:id="@+id/third_color"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:contentDescription="@string/Clothes_color"
+                    tool:src="@color/sky"/>
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/background_transparent_oval_50dp_4_corners_1dp_black_stroke"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <TextView
+                android:id="@+id/clothes_price"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                tool:text="100.000 đ"
+                android:textSize="16sp"
+                android:textColor="@color/blue"
+                android:fontFamily="@font/tinos_bold"
+                android:gravity="center"
+                android:lines="1"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clothes_colors"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginVertical="20dp"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/background_transparent_rectangle_10dp_4_corners_1dp_blue_stroke"
+            android:clickable="false"
+            android:focusable="false"/>
+
+    </androidx.cardview.widget.CardView>
+</layout>

@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <data>
+        <variable
+            name="logupVM"
+            type="com.locnguyen.saleclothesapplication.viewmodel.LogupVM" />
+    </data>
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/background_device">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/cover_img"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:contentDescription="@string/cover_img"
+                android:src="@drawable/cover_image"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHeight_percent="0.25"/>
+
+            <TextView
+                android:id="@+id/sale_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/cover_img"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="30dp"
+                android:text="@string/Sale"
+                android:textSize="40sp"
+                android:textColor="@color/blue"
+                android:gravity="center"
+                android:fontFamily="@font/tinos_bold"
+                />
+
+            <TextView
+                android:id="@+id/clothes_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/sale_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginTop="10dp"
+                android:text="@string/Clothes"
+                android:textSize="40sp"
+                android:textColor="@color/black"
+                android:gravity="center"
+                android:fontFamily="@font/tinos_bold" />
+
+            <EditText
+                android:id="@+id/email_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_white_rectangle_10dp_4_corners_1dp_blue_stroke"
+                android:autofillHints="email"
+                android:text="@={logupVM.email}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/clothes_title"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/tinos_regular"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:inputType="textEmailAddress"/>
+
+            <TextView
+                android:id="@+id/email_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Email_title"
+                android:background="@drawable/backround_title_log_activity"
+                android:textSize="14sp"
+                android:labelFor="@id/email_input"
+                android:textColor="@color/black"
+                android:fontFamily="@font/tinos_bold"
+                android:paddingHorizontal="5dp"
+                app:layout_constraintStart_toStartOf="@id/email_input"
+                app:layout_constraintTop_toTopOf="@id/email_input"
+                app:layout_constraintBottom_toTopOf="@id/email_input"
+                android:layout_marginStart="20dp"/>
+
+            <EditText
+                android:id="@+id/password_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_white_rectangle_10dp_4_corners_1dp_blue_stroke"
+                android:autofillHints="password"
+                android:text="@={logupVM.password}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/email_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/tinos_regular"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:inputType="textPassword"/>
+
+            <TextView
+                android:id="@+id/password_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Password_title"
+                android:background="@drawable/backround_title_log_activity"
+                android:textSize="14sp"
+                android:labelFor="@id/password_input"
+                android:textColor="@color/black"
+                android:fontFamily="@font/tinos_bold"
+                android:paddingHorizontal="5dp"
+                app:layout_constraintStart_toStartOf="@id/password_input"
+                app:layout_constraintTop_toTopOf="@id/password_input"
+                app:layout_constraintBottom_toTopOf="@id/password_input"
+                android:layout_marginStart="20dp"/>
+
+            <EditText
+                android:id="@+id/confirm_password_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/background_white_rectangle_10dp_4_corners_1dp_blue_stroke"
+                android:autofillHints="confirm_password"
+                android:text="@={logupVM.confirmPassword}"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/password_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginHorizontal="50dp"
+                android:layout_marginTop="40dp"
+                android:fontFamily="@font/tinos_regular"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:paddingVertical="10dp"
+                android:paddingHorizontal="20dp"
+                android:inputType="textPassword"/>
+
+            <TextView
+                android:id="@+id/confirm_password_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Confirm_password_title"
+                android:background="@drawable/backround_title_log_activity"
+                android:textSize="14sp"
+                android:labelFor="@id/confirm_password_input"
+                android:textColor="@color/black"
+                android:fontFamily="@font/tinos_bold"
+                android:paddingHorizontal="5dp"
+                app:layout_constraintStart_toStartOf="@id/confirm_password_input"
+                app:layout_constraintTop_toTopOf="@id/confirm_password_input"
+                app:layout_constraintBottom_toTopOf="@id/confirm_password_input"
+                android:layout_marginStart="20dp"/>
+
+            <Button
+                android:id="@+id/btn_logup"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Logup"
+                android:textSize="16sp"
+                android:textColor="@color/white"
+                android:fontFamily="@font/tinos_bold"
+                android:textAllCaps="false"
+                android:onClick="@{() -> logupVM.logup()}"
+                android:background="@drawable/background_blue_rectangle_10dp_4_corners"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/confirm_password_input"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginVertical="40dp"
+                android:padding="10dp"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+</layout>

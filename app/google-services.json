@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "241792629081",
+    "project_id": "sellclothes-c92e4",
+    "storage_bucket": "sellclothes-c92e4.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:241792629081:android:323a8eadc90081c30df448",
+        "android_client_info": {
+          "package_name": "com.locnguyen.saleclothesapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAOFWF0lJhfPU5M-eFwNcYvzt9PwefxrFk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
