@@ -4,7 +4,6 @@
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
-
         <variable
             name="clothesInfoVM"
             type="com.locnguyen.saleclothesapplication.viewmodel.ClothesInfoVM" />
@@ -15,258 +14,209 @@
         android:layout_height="match_parent"
         android:scrollbars="vertical">
 
-        <ImageView
-            android:id="@+id/clothes_img"
+        <ScrollView
+            android:id="@+id/content_space"
             android:layout_width="0dp"
-            android:layout_height="300dp"
-            android:contentDescription="@string/Clothes_img"
-            android:scaleType="centerCrop"
-            android:src="@drawable/clothes_ex"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/btn_back"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:layout_gravity="center"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:contentDescription="@string/Back"
-            android:scaleType="centerCrop"
-            android:src="@drawable/ic_back"
+            android:layout_height="0dp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            android:onClick="@{() -> clothesInfoVM.back()}"/>
-
-        <TextView
-            android:id="@+id/clothes_name"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/tinos_bold"
-            android:textColor="@color/black"
-            android:textSize="20sp"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clothes_img"
-            tool:text="Tên quần áo" />
+            app:layout_constraintBottom_toTopOf="@id/add_cart"
+            android:scrollbars="none">
 
-        <TextView
-            android:id="@+id/clothes_group_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/tinos_bold"
-            android:text="@string/Group_title"
-            android:textColor="@color/blue"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toStartOf="@id/clothes_group_value"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clothes_name" />
-
-        <TextView
-            android:id="@+id/clothes_group_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/clothes_group_title"
-            app:layout_constraintTop_toTopOf="@id/clothes_group_title"
-            tool:text="Nữ" />
-
-        <TextView
-            android:id="@+id/clothes_description_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:fontFamily="@font/tinos_bold"
-            android:text="@string/Description_title"
-            android:textColor="@color/blue"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clothes_group_title" />
-
-        <TextView
-            android:id="@+id/clothes_description_value"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
-            android:layout_marginEnd="20dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="@id/clothes_description_title"
-            app:layout_constraintTop_toBottomOf="@id/clothes_description_title"
-            tool:text="Thông tin quần áo" />
-
-        <TextView
-            android:id="@+id/clothes_color_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/tinos_bold"
-            android:text="@string/Color_title"
-            android:textColor="@color/blue"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clothes_description_value" />
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/first_color_space"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            app:cardCornerRadius="30dp"
-            app:layout_constraintStart_toEndOf="@id/clothes_color_title"
-            app:layout_constraintTop_toTopOf="@id/clothes_color_title"
-            app:layout_constraintBottom_toBottomOf="@id/clothes_color_title">
-
-            <ImageButton
-                android:id="@+id/first_color"
+            <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/Clothes_color"
-                android:onClick="@{(v) -> clothesInfoVM.selectColor(v)}"
-                tool:background="@color/blue"
-                android:scaleType="centerInside"/>
+                android:layout_height="wrap_content">
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_transparent_oval_50dp_4_corners_1dp_black_stroke"
-                android:clickable="false"
-                android:focusable="false"/>
+                <ImageView
+                    android:id="@+id/clothes_img"
+                    android:layout_width="0dp"
+                    android:layout_height="300dp"
+                    android:contentDescription="@string/Clothes_img"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/clothes_ex"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-        </androidx.cardview.widget.CardView>
+                <ImageView
+                    android:id="@+id/btn_back"
+                    android:layout_width="32dp"
+                    android:layout_height="32dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/Back"
+                    android:scaleType="centerCrop"
+                    android:src="@drawable/ic_back"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    android:onClick="@{() -> clothesInfoVM.back()}"/>
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/second_color_space"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            app:cardCornerRadius="30dp"
-            app:layout_constraintStart_toEndOf="@id/first_color_space"
-            app:layout_constraintTop_toTopOf="@id/clothes_color_title"
-            app:layout_constraintBottom_toBottomOf="@id/clothes_color_title">
+                <TextView
+                    android:id="@+id/clothes_name"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginHorizontal="20dp"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:textColor="@color/black"
+                    android:textSize="20sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/clothes_img"
+                    tool:text="Tên quần áo" />
 
-            <ImageButton
-                android:id="@+id/second_color"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/Clothes_color"
-                android:onClick="@{(v) -> clothesInfoVM.selectColor(v)}"
-                tool:background="@color/blue"
-                android:scaleType="centerInside"/>
+                <TextView
+                    android:id="@+id/clothes_group_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:text="@string/Group_title"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toStartOf="@id/clothes_group_value"
+                    app:layout_constraintStart_toStartOf="@id/clothes_name"
+                    app:layout_constraintTop_toBottomOf="@id/clothes_name" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_transparent_oval_50dp_4_corners_1dp_black_stroke"
-                android:clickable="false"
-                android:focusable="false"/>
+                <TextView
+                    android:id="@+id/clothes_group_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="5dp"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/clothes_group_title"
+                    app:layout_constraintTop_toTopOf="@id/clothes_group_title"
+                    tool:text="Nữ" />
 
-        </androidx.cardview.widget.CardView>
+                <TextView
+                    android:id="@+id/clothes_description_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:text="@string/Description_title"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/clothes_group_title"
+                    app:layout_constraintTop_toBottomOf="@id/clothes_group_title" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/third_color_space"
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:layout_marginStart="10dp"
-            app:cardCornerRadius="30dp"
-            app:layout_constraintStart_toEndOf="@id/second_color_space"
-            app:layout_constraintTop_toTopOf="@id/clothes_color_title"
-            app:layout_constraintBottom_toBottomOf="@id/clothes_color_title">
+                <TextView
+                    android:id="@+id/clothes_description_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@id/clothes_description_title"
+                    app:layout_constraintTop_toBottomOf="@id/clothes_description_title"
+                    tool:text="Thông tin quần áo" />
 
-            <ImageButton
-                android:id="@+id/third_color"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/Clothes_color"
-                android:onClick="@{(v) -> clothesInfoVM.selectColor(v)}"
-                tool:background="@color/blue"
-                android:scaleType="centerInside"/>
+                <TextView
+                    android:id="@+id/clothes_color_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:text="@string/Color_title"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="@id/clothes_group_title"
+                    app:layout_constraintTop_toBottomOf="@id/clothes_description_value" />
 
-            <FrameLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:background="@drawable/background_transparent_oval_50dp_4_corners_1dp_black_stroke"
-                android:clickable="false"
-                android:focusable="false"/>
+                <HorizontalScrollView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toEndOf="@id/clothes_color_title"
+                    app:layout_constraintTop_toTopOf="@id/clothes_color_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintBottom_toBottomOf="@id/clothes_color_title"
+                    android:layout_marginEnd="20dp">
 
-        </androidx.cardview.widget.CardView>
+                    <LinearLayout
+                        android:id="@+id/clothes_color_space"
+                        android:layout_width="wrap_content"
+                        android:layout_height="match_parent"
+                        android:orientation="horizontal">
 
-        <TextView
-            android:id="@+id/clothes_size_title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="30dp"
-            android:fontFamily="@font/tinos_bold"
-            android:text="@string/Size_title"
-            android:textColor="@color/blue"
-            android:textSize="14sp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/clothes_color_title" />
+                    </LinearLayout>
 
-        <TextView
-            android:id="@+id/first_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_clothes_size_unchecked"
-            android:fontFamily="@font/tinos_bold"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="5dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:onClick="@{(v) -> clothesInfoVM.selectSize(v)}"
-            app:layout_constraintBottom_toBottomOf="@id/clothes_size_title"
-            app:layout_constraintStart_toEndOf="@id/clothes_size_title"
-            app:layout_constraintTop_toTopOf="@id/clothes_size_title"
-            tool:text="S" />
 
-        <TextView
-            android:id="@+id/second_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_clothes_size_unchecked"
-            android:fontFamily="@font/tinos_bold"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="5dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:onClick="@{(v) -> clothesInfoVM.selectSize(v)}"
-            app:layout_constraintBottom_toBottomOf="@id/clothes_size_title"
-            app:layout_constraintStart_toEndOf="@id/first_size"
-            app:layout_constraintTop_toTopOf="@id/clothes_size_title"
-            tool:text="XL" />
+                </HorizontalScrollView>
 
-        <TextView
-            android:id="@+id/third_size"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="10dp"
-            android:background="@drawable/background_clothes_size_unchecked"
-            android:fontFamily="@font/tinos_bold"
-            android:paddingHorizontal="20dp"
-            android:paddingVertical="5dp"
-            android:textColor="@color/black"
-            android:textSize="14sp"
-            android:onClick="@{(v) -> clothesInfoVM.selectSize(v)}"
-            app:layout_constraintBottom_toBottomOf="@id/clothes_size_title"
-            app:layout_constraintStart_toEndOf="@id/second_size"
-            app:layout_constraintTop_toTopOf="@id/clothes_size_title"
-            tool:text="XXL" />
+                <TextView
+                    android:id="@+id/clothes_size_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="20dp"
+                    android:layout_marginTop="30dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:text="@string/Size_title"
+                    android:textColor="@color/blue"
+                    android:textSize="14sp"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/clothes_color_title" />
+
+                <TextView
+                    android:id="@+id/first_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/background_clothes_size_unchecked"
+                    android:fontFamily="@font/tinos_bold"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:onClick="@{(v) -> clothesInfoVM.selectSize(v)}"
+                    app:layout_constraintBottom_toBottomOf="@id/clothes_size_title"
+                    app:layout_constraintStart_toEndOf="@id/clothes_size_title"
+                    app:layout_constraintTop_toTopOf="@id/clothes_size_title"
+                    tool:text="S" />
+
+                <TextView
+                    android:id="@+id/second_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/background_clothes_size_unchecked"
+                    android:fontFamily="@font/tinos_bold"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:onClick="@{(v) -> clothesInfoVM.selectSize(v)}"
+                    app:layout_constraintBottom_toBottomOf="@id/clothes_size_title"
+                    app:layout_constraintStart_toEndOf="@id/first_size"
+                    app:layout_constraintTop_toTopOf="@id/clothes_size_title"
+                    tool:text="XL" />
+
+                <TextView
+                    android:id="@+id/third_size"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:background="@drawable/background_clothes_size_unchecked"
+                    android:fontFamily="@font/tinos_bold"
+                    android:paddingHorizontal="20dp"
+                    android:paddingVertical="5dp"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:onClick="@{(v) -> clothesInfoVM.selectSize(v)}"
+                    app:layout_constraintBottom_toBottomOf="@id/clothes_size_title"
+                    app:layout_constraintStart_toEndOf="@id/second_size"
+                    app:layout_constraintTop_toTopOf="@id/clothes_size_title"
+                    tool:text="XXL" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </ScrollView>
 
         <TextView
             android:id="@+id/add_cart"
@@ -274,7 +224,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="5dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginVertical="10dp"
             android:background="@drawable/background_white_rectangle_10dp_4_corners_1dp_blue_stroke"
             android:fontFamily="@font/tinos_bold"
             android:gravity="center"
@@ -285,7 +235,8 @@
             android:onClick="@{() -> clothesInfoVM.addCart()}"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toStartOf="@id/clothes_price"
-            app:layout_constraintStart_toStartOf="parent" />
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content_space"/>
 
         <TextView
             android:id="@+id/clothes_price"
@@ -293,7 +244,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="5dp"
             android:layout_marginEnd="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginVertical="10dp"
             android:background="@drawable/background_blue_rectangle_10dp_4_corners"
             android:fontFamily="@font/tinos_bold"
             android:gravity="center"
@@ -303,6 +254,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@id/add_cart"
+            app:layout_constraintTop_toBottomOf="@id/content_space"
             tool:text="Giá quần áo" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

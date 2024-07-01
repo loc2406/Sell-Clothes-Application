@@ -24,22 +24,6 @@ class PaymentAdapter(private var list: List<SellClothes>) : RecyclerView.Adapter
                 .error(R.drawable.ic_loading_err)
                 .into(binding.img)
         }
-
-        fun getColorName(colorId: Int): String{
-            return when(colorId){
-                R.color.white -> "trắng"
-                R.color.black -> "đen"
-                R.color.red -> "đỏ"
-                R.color.yellow -> "vàng"
-                R.color.orange -> "cam"
-                R.color.blue -> "xanh dương"
-                R.color.green -> "xanh lá"
-                R.color.sky -> "xanh da trời"
-                R.color.pink -> "hồng"
-                R.color.purple -> "tím"
-                else -> ""
-            }
-        }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PaymentVH {
@@ -55,7 +39,7 @@ class PaymentAdapter(private var list: List<SellClothes>) : RecyclerView.Adapter
         val context = holder.binding.root.context
 
         holder.bindImg(context, data.img)
-        holder.binding.clothesInfo.text = context.getString(R.string.Clothes_info_regex, data.name, data.size, holder.getColorName(data.color))
+        holder.binding.clothesInfo.text = context.getString(R.string.Clothes_info_regex, data.name, data.size, data.color.name)
         holder.binding.quality.text = context.getString(R.string.Quality_regex, data.quality)
 
         val numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY)

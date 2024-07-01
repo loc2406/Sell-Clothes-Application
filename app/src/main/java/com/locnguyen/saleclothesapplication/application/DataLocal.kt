@@ -2,12 +2,18 @@ package com.locnguyen.saleclothesapplication.application
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.provider.ContactsContract.Data
+import android.widget.ImageView
 import androidx.core.content.edit
+import com.bumptech.glide.Glide
+import com.locnguyen.saleclothesapplication.R
+import java.text.NumberFormat
+import java.util.Locale
 
-class SharedRef(private val contex: Context) {
+class SharedRef(val context: Context) {
 
     private val SHARE_REF_CODE = "SHARE_REF_CODE"
-    private val sharedRef: SharedPreferences by lazy { contex.getSharedPreferences(SHARE_REF_CODE, Context.MODE_PRIVATE) }
+    private val sharedRef: SharedPreferences by lazy { context.getSharedPreferences(SHARE_REF_CODE, Context.MODE_PRIVATE) }
 
     fun addBooleanValue(key: String, value: Boolean){
         sharedRef.edit {
@@ -38,6 +44,8 @@ class DataLocal{
     private lateinit var sharedRef: SharedRef
     private val USER_ID = "USER_ID"
     private val IS_LOGGED_IN = "IS_LOGGED_IN"
+    var densityValue: Float = 0.0f
+    lateinit var priceFormat: NumberFormat
 
     companion object{
         private lateinit var instance: DataLocal
@@ -45,6 +53,8 @@ class DataLocal{
         fun init(context: Context){
             instance = DataLocal()
             instance.sharedRef = SharedRef(context)
+            instance.densityValue = context.resources.displayMetrics.density
+            instance.priceFormat = NumberFormat.getNumberInstance(Locale.GERMANY)
         }
 
         fun getInstance(): DataLocal = instance
@@ -61,5 +71,13 @@ class DataLocal{
     }
 
     fun getIsLoggedIn(): Boolean = sharedRef.getBooleanValue(IS_LOGGED_IN)
+
+    fun bindImg(context: Context, img: String, view: ImageView){
+        Glide.with(context)
+            .load(img)
+            .placeholder(R.drawable.ic_loading)
+            .error(R.drawable.ic_loading_err)
+            .into(view)
+    }
 
 }

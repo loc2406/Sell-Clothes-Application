@@ -1,6 +1,7 @@
 package com.locnguyen.saleclothesapplication.adapter
 
 import android.content.Context
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View.GONE
 import android.view.View.VISIBLE
@@ -65,7 +66,7 @@ class CartAdapter(private var list: List<SellClothes>) : RecyclerView.Adapter<Ca
         holder.binding.name.text = data.name
         holder.binding.quality.text = context.getString(R.string.Quality_regex, data.quality)
         holder.binding.size.text = context.getString(R.string.Size_regex, data.size)
-        holder.binding.color.setImageDrawable(ResourcesCompat.getDrawable(context.resources, data.color, null))
+        holder.binding.color.setBackgroundColor(Color.parseColor(data.color.hexCode))
 
         val numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY)
         val formattedNumber = numberFormat.format(data.price)

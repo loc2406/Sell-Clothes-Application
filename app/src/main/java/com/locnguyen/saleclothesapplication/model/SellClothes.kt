@@ -7,7 +7,7 @@ data class SellClothes(
     var name: String = "",
     var group: String = "",
     var description: String = "",
-    var color: Int = 0,
+    var color: ClothesColor = ClothesColor(),
     var size: String = "",
     var price: Long = 0,
     var quality: Long = 0

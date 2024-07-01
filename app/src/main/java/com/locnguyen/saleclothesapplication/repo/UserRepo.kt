@@ -12,8 +12,10 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.database
+import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
+import com.locnguyen.saleclothesapplication.model.ClothesColor
 
 class UserRepo {
 
@@ -194,6 +196,17 @@ class UserRepo {
             }
 
         return isUpdated
+    }
+
+    fun getImgNameFromUri(listImg: List<String>, clothesName: String, colorName: String): String {
+        var nameFound = ""
+
+        listImg.forEach { img ->
+            val imgName = FirebaseStorage.getInstance().getReferenceFromUrl(img).name.substringBeforeLast(".")
+            if (imgName == "$clothesName, $colorName") nameFound = imgName
+        }
+
+        return nameFound
     }
 
 }

@@ -2,12 +2,9 @@ package com.locnguyen.saleclothesapplication.model
 
 import java.io.Serializable
 
-data class Comment(
+data class ClothesColor(
     var name: String="",
-    var content: String="",
-    var star: Int = 0,
-    var like: Long = 0,
-    var unlike: Long = 0
+    var hexCode: String=""
 ): Serializable{
     constructor(): this("")
 }

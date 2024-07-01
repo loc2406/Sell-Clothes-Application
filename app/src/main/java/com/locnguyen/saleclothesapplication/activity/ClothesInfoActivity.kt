@@ -1,19 +1,30 @@
 package com.locnguyen.saleclothesapplication.activity
 
+import android.graphics.Color
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
+import android.view.LayoutInflater
+import android.view.View
+import android.widget.ImageButton
+import android.widget.LinearLayout
+import android.widget.RadioGroup.LayoutParams
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import androidx.cardview.widget.CardView
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.locnguyen.saleclothesapplication.R
+import com.locnguyen.saleclothesapplication.application.Application
+import com.locnguyen.saleclothesapplication.application.DataLocal
 import com.locnguyen.saleclothesapplication.databinding.ClothesInfoActivityBinding
 import com.locnguyen.saleclothesapplication.fragment.CartFragment
 import com.locnguyen.saleclothesapplication.model.Clothes
+import com.locnguyen.saleclothesapplication.model.ClothesColor
 import com.locnguyen.saleclothesapplication.model.SellClothes
 import com.locnguyen.saleclothesapplication.viewmodel.ClothesInfoVM
 import java.text.NumberFormat
@@ -23,6 +34,7 @@ class ClothesInfoActivity : AppCompatActivity() {
 
     private lateinit var binding: ClothesInfoActivityBinding
     private lateinit var clothesInfoVM: ClothesInfoVM
+    private val clothesColorIds: ArrayList<Int> by lazy { ArrayList() }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,26 +51,42 @@ class ClothesInfoActivity : AppCompatActivity() {
     }
 
     private fun bindView(clothes: Clothes) {
-        Glide.with(this)
-            .load(clothes.img)
-            .placeholder(R.drawable.ic_loading)
-            .error(R.drawable.ic_loading_err)
-            .into(binding.clothesImg)
-
         binding.apply {
+            DataLocal.getInstance().bindImg(this@ClothesInfoActivity, clothes.img[0], clothesImg)
+
             clothesName.text = clothes.name
             clothesGroupValue.text = clothes.group
             clothesDescriptionValue.text = clothes.description
 
-            firstColor.background = ResourcesCompat.getDrawable(resources, clothes.color[0], null)
-            secondColor.background = ResourcesCompat.getDrawable(resources, clothes.color[1], null)
-            thirdColor.background = ResourcesCompat.getDrawable(resources, clothes.color[2], null)
+            val density = DataLocal.getInstance().densityValue
+            val linearParam = LinearLayout.LayoutParams((30 * density).toInt(), (30 * density).toInt()).apply {
+                    setMargins((10 * density).toInt(), 0, 0, 0)
+                }
+            clothes.color.forEach { color ->
+                val colorView = layoutInflater.inflate(R.layout.item_clothes_color, clothesColorSpace, false)
+
+                colorView.apply {
+                        val randomId = View.generateViewId()
+                        clothesColorIds.add(randomId)
+
+                        id = randomId
+                        layoutParams = linearParam
+
+                        findViewById<ImageButton>(R.id.clothes_color)?.apply{
+                            setBackgroundColor(Color.parseColor(color.hexCode))
+                            setOnClickListener {
+                                this@ClothesInfoActivity.clothesInfoVM.selectColor(randomId)
+                            }
+                        }
+                    }
+                clothesColorSpace.addView(colorView)
+            }
 
             firstSize.text = clothes.size[0]
             secondSize.text = clothes.size[1]
             thirdSize.text = clothes.size[2]
 
-            val numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY)
+            val numberFormat = DataLocal.getInstance().priceFormat
             val formattedNumber = numberFormat.format(clothes.price)
             clothesPrice.text = getString(R.string.Price_regex, formattedNumber)
         }
@@ -107,20 +135,23 @@ class ClothesInfoActivity : AppCompatActivity() {
             .setTitle("Xác nhận thêm giỏ hàng")
             .setMessage("Bạn có chắc muốn thêm vào giỏ hàng chứ!")
             .setCancelable(false)
-            .setNegativeButton("Hủy"){ dialog, which ->
+            .setNegativeButton("Hủy") { dialog, which ->
                 dialog.dismiss()
             }
-            .setPositiveButton("Đồng ý"){dialog, which ->
+            .setPositiveButton("Đồng ý") { dialog, which ->
+                val selectedColor = getSelectedColor()
+                val selectedImg = getImgOfSelectedColor(selectedColor)
+
                 CartFragment.add(
                     SellClothes(
-                        img = clothesInfoVM.clothes.value!!.img,
+                        img = selectedImg,
                         name = clothesInfoVM.clothes.value!!.name,
                         group = clothesInfoVM.clothes.value!!.group,
                         description = clothesInfoVM.clothes.value!!.description,
                         size = getSelectedSize(),
                         price = clothesInfoVM.clothes.value!!.price,
                         quality = 1,
-                        color = getSelectedColor(),
+                        color = selectedColor,
                     )
                 )
                 Toast.makeText(this, "Đã thêm giỏ hàng thành công!", Toast.LENGTH_SHORT).show()
@@ -129,6 +160,14 @@ class ClothesInfoActivity : AppCompatActivity() {
 
         dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.blue))
         dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.blue))
+    }
+
+    private fun getImgOfSelectedColor(selectedColor: ClothesColor): String {
+        return clothesInfoVM.getImgName(
+            clothesInfoVM.clothes.value!!.img,
+            clothesInfoVM.clothes.value!!.name,
+            selectedColor.name
+        )
     }
 
     private fun setClothesSizeSelected(viewId: Int) {
@@ -176,64 +215,24 @@ class ClothesInfoActivity : AppCompatActivity() {
     }
 
     private fun setClothesColorSelected(viewId: Int) {
-        when (viewId) {
-            R.id.first_color -> {
-                val icCheck = if (clothesInfoVM.clothes.value!!.color[0] == R.color.black) {
-                    R.drawable.ic_check_white
-                } else {
-                    R.drawable.ic_check_black
-                }
+        clothesColorIds.forEach { id ->
+            val colorImgButt = findViewById<CardView>(id)?.findViewById<ImageButton>(R.id.clothes_color)
 
-                binding.firstColor.setImageDrawable(
+            if (id == viewId) {
+                colorImgButt?.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources,
-                        icCheck,
+                        R.drawable.clothes_color_selected,
                         null
                     )
                 )
-                binding.secondColor.setImageDrawable(null)
-                binding.thirdColor.setImageDrawable(null)
-            }
-
-            R.id.second_color -> {
-                val icCheck = if (clothesInfoVM.clothes.value!!.color[1] == R.color.black) {
-                    R.drawable.ic_check_white
-                } else {
-                    R.drawable.ic_check_black
-                }
-
-                binding.firstColor.setImageDrawable(null)
-                binding.secondColor.setImageDrawable(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        icCheck,
-                        null
-                    )
-                )
-                binding.thirdColor.setImageDrawable(null)
-            }
-
-            R.id.third_color -> {
-                val icCheck = if (clothesInfoVM.clothes.value!!.color[2] == R.color.black) {
-                    R.drawable.ic_check_white
-                } else {
-                    R.drawable.ic_check_black
-                }
-
-                binding.firstColor.setImageDrawable(null)
-                binding.secondColor.setImageDrawable(null)
-                binding.thirdColor.setImageDrawable(
-                    ResourcesCompat.getDrawable(
-                        resources,
-                        icCheck,
-                        null
-                    )
-                )
+            } else {
+                colorImgButt?.setImageDrawable(null)
             }
         }
     }
 
-    private fun getSelectedColor(): Int {
+    private fun getSelectedColor(): ClothesColor {
         return when (clothesInfoVM.selectedColor.value) {
             R.id.first_color -> clothesInfoVM.clothes.value!!.color[0]
             R.id.second_color -> clothesInfoVM.clothes.value!!.color[1]

@@ -2,6 +2,7 @@ package com.locnguyen.saleclothesapplication.adapter
 
 import android.content.Context
 import android.content.res.Resources
+import android.graphics.Color
 import android.view.LayoutInflater
 import android.view.View.INVISIBLE
 import android.view.ViewGroup
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide
 import com.locnguyen.saleclothesapplication.R
 import com.locnguyen.saleclothesapplication.databinding.ItemClothesBinding
 import com.locnguyen.saleclothesapplication.model.Clothes
+import com.locnguyen.saleclothesapplication.model.ClothesColor
 import java.text.NumberFormat
 import java.util.Locale
 
@@ -27,29 +29,26 @@ class ClothesAdapter(var list: ArrayList<Clothes>, private val onClicked: (Cloth
                 .into(binding.clothesImg)
         }
 
-        fun bindColor(context: Context, colors: List<Int>) {
+        fun bindColor(context: Context, colors: List<ClothesColor>) {
             try{
-                val firstColor = context.resources.getColor(colors[0], null)
-                binding.firstColor.setBackgroundColor(firstColor)
+                binding.firstColor.setBackgroundColor(Color.parseColor(colors[0].hexCode))
             }
-            catch(e: Resources.NotFoundException){
-                binding.firstColorSpace.visibility =  INVISIBLE
+            catch(e: IllegalArgumentException){
+                binding.firstColor.setBackgroundColor(R.color.black)
             }
 
             try{
-                val secondColor = context.resources.getColor(colors[1], null)
-                binding.secondColor.setBackgroundColor(secondColor)
+                binding.secondColor.setBackgroundColor(Color.parseColor(colors[1].hexCode))
             }
-            catch(e: Resources.NotFoundException){
-                binding.secondColorSpace.visibility =  INVISIBLE
+            catch(e: IllegalArgumentException){
+                binding.secondColor.setBackgroundColor(R.color.black)
             }
 
             try{
-                val thirdColor = context.resources.getColor(colors[2], null)
-                binding.thirdColor.setBackgroundColor(thirdColor)
+                binding.thirdColor.setBackgroundColor(Color.parseColor(colors[2].hexCode))
             }
-            catch(e: Resources.NotFoundException){
-                binding.thirdColorSpace.visibility =  INVISIBLE
+            catch(e: IllegalArgumentException){
+                binding.thirdColor.setBackgroundColor(R.color.black)
             }
         }
     }
@@ -64,7 +63,7 @@ class ClothesAdapter(var list: ArrayList<Clothes>, private val onClicked: (Cloth
         val data = list[position]
         val context = holder.binding.root.context
 
-        holder.bindImg(context, data.img)
+        holder.bindImg(context, data.img[0])
         holder.binding.clothesName.text = data.name
 
         when(data.group){

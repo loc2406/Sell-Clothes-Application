@@ -6,8 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.locnguyen.saleclothesapplication.R
 import com.locnguyen.saleclothesapplication.model.Clothes
+import com.locnguyen.saleclothesapplication.model.ClothesColor
+import com.locnguyen.saleclothesapplication.repo.UserRepo
 
 class ClothesInfoVM: ViewModel() {
+    val userRepo = UserRepo()
 
     private val _back: MutableLiveData<Boolean> by lazy {MutableLiveData(false)}
     val back: LiveData<Boolean> by lazy {_back}
@@ -27,8 +30,8 @@ class ClothesInfoVM: ViewModel() {
         _back.value = true
     }
 
-    fun selectColor(view: View){
-        _selectedColor.value = view.id
+    fun selectColor(id: Int){
+        _selectedColor.value = id
     }
 
     fun selectSize(view: View){
@@ -37,6 +40,10 @@ class ClothesInfoVM: ViewModel() {
 
     fun addCart(){
         _addCart.value = true
+    }
+
+    fun getImgName(listImg: List<String>, clothesName: String, colorName: String): String {
+       return userRepo.getImgNameFromUri(listImg, clothesName, colorName)
     }
 
 }
