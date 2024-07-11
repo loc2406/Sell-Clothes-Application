@@ -10,7 +10,15 @@ data class SellClothes(
     var color: ClothesColor = ClothesColor(),
     var size: String = "",
     var price: Long = 0,
-    var quality: Long = 0
-) : Serializable{
-    constructor(): this("")
+    var quantity: Long = 0
+) {
+    fun isSameType(clothes: SellClothes): Boolean {
+        return img == clothes.img &&
+                name == clothes.name &&
+                group == clothes.group &&
+                description == clothes.description &&
+                color == clothes.color &&
+                size == clothes.size &&
+                price == clothes.price
+    }
 }

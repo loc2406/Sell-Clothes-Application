@@ -34,21 +34,21 @@ class ClothesAdapter(var list: ArrayList<Clothes>, private val onClicked: (Cloth
                 binding.firstColor.setBackgroundColor(Color.parseColor(colors[0].hexCode))
             }
             catch(e: IllegalArgumentException){
-                binding.firstColor.setBackgroundColor(R.color.black)
+                binding.firstColor.setBackgroundColor(context.resources.getColor(R.color.black, null))
             }
 
             try{
                 binding.secondColor.setBackgroundColor(Color.parseColor(colors[1].hexCode))
             }
             catch(e: IllegalArgumentException){
-                binding.secondColor.setBackgroundColor(R.color.black)
+                binding.secondColor.setBackgroundColor(context.resources.getColor(R.color.black, null))
             }
 
             try{
                 binding.thirdColor.setBackgroundColor(Color.parseColor(colors[2].hexCode))
             }
             catch(e: IllegalArgumentException){
-                binding.thirdColor.setBackgroundColor(R.color.black)
+                binding.thirdColor.setBackgroundColor(context.resources.getColor(R.color.black, null))
             }
         }
     }
@@ -63,7 +63,7 @@ class ClothesAdapter(var list: ArrayList<Clothes>, private val onClicked: (Cloth
         val data = list[position]
         val context = holder.binding.root.context
 
-        holder.bindImg(context, data.img[0])
+        holder.bindImg(context, data.imgs[0])
         holder.binding.clothesName.text = data.name
 
         when(data.group){
@@ -71,7 +71,7 @@ class ClothesAdapter(var list: ArrayList<Clothes>, private val onClicked: (Cloth
             "Nữ" -> holder.binding.clothesGroupValue.setImageDrawable(ResourcesCompat.getDrawable(context.resources, R.drawable.ic_female, null))
         }
 
-        holder.bindColor(context, data.color)
+        holder.bindColor(context, data.colors)
 
         val numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY)
         val formattedNumber = numberFormat.format(data.price)

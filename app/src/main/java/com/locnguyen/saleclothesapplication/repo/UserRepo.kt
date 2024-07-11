@@ -1,7 +1,10 @@
 package com.locnguyen.saleclothesapplication.repo
 
+import android.provider.ContactsContract.Data
+import android.renderscript.Sampler.Value
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.material.color.utilities.QuantizerCelebi
 import com.locnguyen.saleclothesapplication.application.DataLocal
 import com.locnguyen.saleclothesapplication.model.Order
 import com.locnguyen.saleclothesapplication.model.User
@@ -16,20 +19,24 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.storage
 import com.locnguyen.saleclothesapplication.model.ClothesColor
+import com.locnguyen.saleclothesapplication.model.SellClothes
 
 class UserRepo {
 
     private val auth: FirebaseAuth = FirebaseAuth.getInstance()
-    private val listUsersInfoRef: DatabaseReference =  Firebase.database.getReference("List users")
-    private val listUsersImgRef: StorageReference =  Firebase.storage.getReference("List users")
+    private val listUsersInfoRef: DatabaseReference = Firebase.database.getReference("List users")
+    private val listUsersImgRef: StorageReference = Firebase.storage.getReference("List users")
+    private val userCartRef: DatabaseReference =
+        Firebase.database.getReference("List users").child(DataLocal.getInstance().getUserId())
+            .child("Cart")
 
     fun isLoggedIn(email: String, password: String): LiveData<Pair<Boolean, String>> {
         val isLoggedIn: MutableLiveData<Pair<Boolean, String>> = MutableLiveData()
 
-        listUsersInfoRef.addListenerForSingleValueEvent(object: ValueEventListener{
+        listUsersInfoRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    snapshot.children.forEach{ userSnapshot ->
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { userSnapshot ->
                         val user = userSnapshot.getValue(User::class.java)
 
                         user?.let {
@@ -41,7 +48,7 @@ class UserRepo {
 
                                             DataLocal.getInstance().setUserId(userAuthId)
                                             isLoggedIn.value = Pair(true, "Tài khoản đã tồn tại!")
-                                    }
+                                        }
                                         .addOnFailureListener { e ->
                                             isLoggedIn.value = Pair(false, e.message.toString())
                                         }
@@ -60,8 +67,7 @@ class UserRepo {
                             isLoggedIn.value = Pair(false, "Không tìm thấy người dùng!")
                         }
                     }
-                }
-                else{
+                } else {
                     isLoggedIn.value = Pair(false, "Tài khoản chưa được đăng kí!")
                 }
             }
@@ -74,17 +80,17 @@ class UserRepo {
         return isLoggedIn
     }
 
-    fun isExistAccount(email: String) : LiveData<Boolean>{
+    fun isExistAccount(email: String): LiveData<Boolean> {
         val isExist: MutableLiveData<Boolean> = MutableLiveData(false)
 
-        listUsersInfoRef.addListenerForSingleValueEvent(object: ValueEventListener{
+        listUsersInfoRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    snapshot.children.forEach{ userSnapshot ->
+                if (snapshot.exists()) {
+                    snapshot.children.forEach { userSnapshot ->
                         val user = userSnapshot.getValue(User::class.java)
 
                         user?.let {
-                            if (it.email == email){
+                            if (it.email == email) {
                                 isExist.value = true
                             }
                         }
@@ -134,14 +140,15 @@ class UserRepo {
     fun getUserInfo(): LiveData<User> {
         val user: MutableLiveData<User> = MutableLiveData()
 
-        listUsersInfoRef.child(DataLocal.getInstance().getUserId()).addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                user.value = snapshot.getValue(User::class.java)
-            }
+        listUsersInfoRef.child(DataLocal.getInstance().getUserId())
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    user.value = snapshot.getValue(User::class.java)
+                }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
 
         return user
     }
@@ -149,14 +156,15 @@ class UserRepo {
     fun createOrder(order: Order): LiveData<Boolean> {
         val isCreated: MutableLiveData<Boolean> = MutableLiveData()
 
-       listUsersInfoRef.child(DataLocal.getInstance().getUserId()).child("List orders").child(order.id)
-           .setValue(order)
-           .addOnSuccessListener {
-               isCreated.value = true
-           }
-           .addOnFailureListener {
-               isCreated.value = false
-           }
+        listUsersInfoRef.child(DataLocal.getInstance().getUserId()).child("List orders")
+            .child(order.id)
+            .setValue(order)
+            .addOnSuccessListener {
+                isCreated.value = true
+            }
+            .addOnFailureListener {
+                isCreated.value = false
+            }
 
         return isCreated
     }
@@ -165,20 +173,21 @@ class UserRepo {
         val listLD: MutableLiveData<List<Order>> = MutableLiveData(emptyList())
         val list = mutableListOf<Order>()
 
-        listUsersInfoRef.child(DataLocal.getInstance().getUserId()).child("List orders").addValueEventListener(object: ValueEventListener{
-            override fun onDataChange(snapshot: DataSnapshot) {
-                if (snapshot.exists()){
-                    snapshot.children.forEach { orderSnapshot ->
-                        val order = orderSnapshot.getValue(Order::class.java)
-                        order?.let { list.add(it) }
+        listUsersInfoRef.child(DataLocal.getInstance().getUserId()).child("List orders")
+            .addValueEventListener(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        snapshot.children.forEach { orderSnapshot ->
+                            val order = orderSnapshot.getValue(Order::class.java)
+                            order?.let { list.add(it) }
+                        }
+                        listLD.value = list
                     }
-                    listLD.value = list
                 }
-            }
 
-            override fun onCancelled(error: DatabaseError) {
-            }
-        })
+                override fun onCancelled(error: DatabaseError) {
+                }
+            })
 
         return listLD
     }
@@ -198,15 +207,77 @@ class UserRepo {
         return isUpdated
     }
 
-    fun getImgNameFromUri(listImg: List<String>, clothesName: String, colorName: String): String {
-        var nameFound = ""
+    fun addClothesToCartOnFb(clothes: SellClothes): LiveData<Boolean> {
+        val isAdded: MutableLiveData<Boolean> = MutableLiveData()
 
-        listImg.forEach { img ->
-            val imgName = FirebaseStorage.getInstance().getReferenceFromUrl(img).name.substringBeforeLast(".")
-            if (imgName == "$clothesName, $colorName") nameFound = imgName
-        }
+        userCartRef.child("${clothes.name}, màu ${clothes.color.name}, size ${clothes.size}")
+            .setValue(clothes)
+            .addOnSuccessListener {
+                isAdded.value = true
+            }
+            .addOnFailureListener {
+                isAdded.value = false
+            }
 
-        return nameFound
+        return isAdded
+    }
+
+    fun isExistedClothes(clothes: SellClothes): LiveData<Boolean> {
+        val isExisted: MutableLiveData<Boolean> = MutableLiveData()
+
+        userCartRef.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    if (snapshot.exists()) {
+                        snapshot.children.forEach { clothesSnapshot ->
+                            val clothesValue = clothesSnapshot.getValue(SellClothes::class.java)
+                            val isSameClothes = clothesValue?.isSameType(clothes) ?: false
+
+                            if (isSameClothes) {
+                                isExisted.value = true
+                            }
+                        }
+
+                        if (isExisted.value  == null) isExisted.value = false
+                    }
+                    else{
+                        isExisted.value = false
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    isExisted.value = false
+                }
+            })
+
+        return isExisted
+    }
+
+    fun updateClothesQuantityOnFb(clothesNamePath: String, quantity: Long): LiveData<Boolean> {
+        val isUpdated: MutableLiveData<Boolean> = MutableLiveData()
+
+        userCartRef.child(clothesNamePath).child("quantity")
+            .addListenerForSingleValueEvent(object: ValueEventListener{
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val currentQuantity = snapshot.getValue(Long::class.java)
+                    val newQuantity = currentQuantity?.plus(quantity)
+
+                    newQuantity?.let{
+                        userCartRef.child(clothesNamePath).child("quantity").setValue(it)
+                            .addOnSuccessListener {
+                                isUpdated.value = true
+                        }
+                            .addOnFailureListener {
+                                isUpdated.value = false
+                            }
+                    }
+                }
+
+                override fun onCancelled(error: DatabaseError) {
+                    isUpdated.value = false
+                }
+            })
+
+        return isUpdated
     }
 
 }

@@ -17,7 +17,9 @@ import com.locnguyen.saleclothesapplication.adapter.ClothesAdapter
 import com.locnguyen.saleclothesapplication.databinding.HomeFragmentBinding
 import com.locnguyen.saleclothesapplication.model.Clothes
 import com.locnguyen.saleclothesapplication.model.ClothesColor
+import com.locnguyen.saleclothesapplication.model.Comment
 import com.locnguyen.saleclothesapplication.viewmodel.MainVM
+import java.time.LocalDateTime
 import kotlin.collections.ArrayList
 
 class HomeFragment : Fragment() {
@@ -37,7 +39,7 @@ class HomeFragment : Fragment() {
     private fun getList(): ArrayList<Clothes> {
         return arrayListOf(
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Nam%20AVIANO%20C%E1%BB%95%20Tr%C3%B2n%20C%E1%BB%99c%20Tay%20Ph%E1%BB%91i%20K%E1%BA%BB%20Vi%E1%BB%81n%20Tay%2C%20%C4%90%E1%BB%93%20Th%E1%BB%83%20Thao%20Nam%20Form%20D%C3%A1ng%20Basic%2C%20Tr%E1%BA%AFng.jpg?alt=media&token=f2ea9ac3-ad6d-4849-95b3-09e9d1473991",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Nam%20AVIANO%20C%E1%BB%95%20Tr%C3%B2n%20C%E1%BB%99c%20Tay%20Ph%E1%BB%91i%20K%E1%BA%BB%20Vi%E1%BB%81n%20Tay%2C%20%C4%90%E1%BB%93%20Th%E1%BB%83%20Thao%20Nam%20Form%20D%C3%A1ng%20Basic%2C%20%C4%90en.jpg?alt=media&token=d3c27263-2ccd-4345-b856-f620d941078a",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Nam%20AVIANO%20C%E1%BB%95%20Tr%C3%B2n%20C%E1%BB%99c%20Tay%20Ph%E1%BB%91i%20K%E1%BA%BB%20Vi%E1%BB%81n%20Tay%2C%20%C4%90%E1%BB%93%20Th%E1%BB%83%20Thao%20Nam%20Form%20D%C3%A1ng%20Basic%2C%20X%C3%A1m.jpg?alt=media&token=a5aab65b-16a0-4c1a-a314-919f7dedcda6"
@@ -54,13 +56,23 @@ class HomeFragment : Fragment() {
                                 "\t- Màu sắc đa dạng, basic phù hợp với nhiều lứa tuổi\n" +
                                 "\t- Đường may tinh tế, tỉ mỉ trong từng chi tiết.\n",
                 group = "Nam",
-                color = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Đen", "#000000"), ClothesColor("Xám", "#aeafaf")),
-                size = listOf("M", "L", "XL", "XXL"),
+                colors = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Đen", "#000000"), ClothesColor("Xám", "#aeafaf")),
+                sizes = listOf("M", "L", "XL", "XXL"),
                 price = 179000,
-                sell = 120
+                sell = 120,
+                comments = listOf(
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 1", 5, 234, LocalDateTime.now().toString()),
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 2", 2, 234, LocalDateTime.now().toString()),
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 3", 3, 234, LocalDateTime.now().toString()),
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 4", 1, 234, LocalDateTime.now().toString()),
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 5", 5, 234, LocalDateTime.now().toString()),
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 6", 2, 234, LocalDateTime.now().toString()),
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 7", 3, 234, LocalDateTime.now().toString()),
+                    Comment("Nguyễn Thành Lộc", "Đây là bình luận 8", 1, 234, LocalDateTime.now().toString())
+                )
             ),
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/%C4%90%E1%BB%92%20B%E1%BB%98%20NAM%20TH%E1%BB%82%20THAO%20THUN%20COTTON-NLSAO%2C%20Tr%E1%BA%AFng.jpg?alt=media&token=57e97654-02ca-4cf7-913e-560236d438e1",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/%C4%90%E1%BB%92%20B%E1%BB%98%20NAM%20TH%E1%BB%82%20THAO%20THUN%20COTTON-NLSAO%2C%20Xanh%20d%C6%B0%C6%A1ng.jpg?alt=media&token=35dfbddf-4cd4-4f1c-8a54-9bb0ff965d05",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/%C4%90%E1%BB%92%20B%E1%BB%98%20NAM%20TH%E1%BB%82%20THAO%20THUN%20COTTON-NLSAO%2C%20%C4%90en.jpg?alt=media&token=64694dd2-af84-4e7b-b6c1-73e2414ecc16"
@@ -80,16 +92,16 @@ class HomeFragment : Fragment() {
                         "\t\t- Áo được kiểm tra kĩ càng, cẩn thận và tư vấn nhiệt tình trước khi gói hàng giao cho Quý Khách\n" +
                         "\t\t- Hàng có sẵn, giao hàng ngay khi nhận được đơn \n" +
                         "\t\t- Hoàn tiền nếu sản phẩm không giống với mô tả\n" +
-                        "\t\t- Chấp nhận đổi hàng khi size không vừa\n" +
+                        "\t\t- Chấp nhận đổi hàng khi sizes không vừa\n" +
                         "\t\t- Giao hàng trên toàn quốc, nhận hàng trả tiền",
                 group = "Nam",
-                color = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Xanh dương", "#1b67ff"), ClothesColor("Đen", "#000000")),
-                size = listOf("M", "L", "XL", "XXL"),
+                colors = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Xanh dương", "#1b67ff"), ClothesColor("Đen", "#000000")),
+                sizes = listOf("M", "L", "XL", "XXL"),
                 price = 59000,
                 sell = 23800
             ),
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20Pijama%20M%E1%BA%B7c%20Nh%C3%A0%20Qu%E1%BA%A7n%20C%E1%BB%99c%20%C3%81o%20C%E1%BB%99c%20Ch%E1%BA%A5t%20Li%E1%BB%87u%20L%E1%BB%A5a%20Satin%20Cao%20C%E1%BA%A5p%20Th%C6%B0%C6%A1ng%20Hi%E1%BB%87u%20XAVIA%20P1%2C%20%C4%90%E1%BB%8F.jpg?alt=media&token=1a10c588-38fa-4f3d-b289-8a3491edcca6",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20Pijama%20M%E1%BA%B7c%20Nh%C3%A0%20Qu%E1%BA%A7n%20C%E1%BB%99c%20%C3%81o%20C%E1%BB%99c%20Ch%E1%BA%A5t%20Li%E1%BB%87u%20L%E1%BB%A5a%20Satin%20Cao%20C%E1%BA%A5p%20Th%C6%B0%C6%A1ng%20Hi%E1%BB%87u%20XAVIA%20P1%2C%20Xanh%20ng%E1%BB%8Dc.jpg?alt=media&token=c9fc8d6a-d794-45ca-874f-05c6f13cdf20",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20Pijama%20M%E1%BA%B7c%20Nh%C3%A0%20Qu%E1%BA%A7n%20C%E1%BB%99c%20%C3%81o%20C%E1%BB%99c%20Ch%E1%BA%A5t%20Li%E1%BB%87u%20L%E1%BB%A5a%20Satin%20Cao%20C%E1%BA%A5p%20Th%C6%B0%C6%A1ng%20Hi%E1%BB%87u%20XAVIA%20P1%2C%20V%C3%A0ng.jpg?alt=media&token=60bcea6c-d7bb-40b3-bd17-0b46f7ab0bbd"
@@ -97,7 +109,7 @@ class HomeFragment : Fragment() {
                 name = "Bộ Pijama Mặc Nhà Quần Cộc Áo Cộc Chất Liệu Lụa Satin Cao Cấp Thương Hiệu XAVIA P1",
                 description =
                 "Mã SP: P1\n" +
-                        "Thông số size tham khảo:\n" +
+                        "Thông số sizes tham khảo:\n" +
                         "Size S: 37-45kg\n" +
                         "Size M: 45-53kg\n" +
                         "Size L: 53-58kg\n" +
@@ -122,13 +134,13 @@ class HomeFragment : Fragment() {
                         "\t\t- Đội ngũ luôn tư vấn tận tâm, chi tiết, hỗ trợ nhiệt tình nhất với khách hàng.\n" +
                         "\t\t- Khách yêu nhận được sản phẩm, vui lòng đánh giá 5* giúp Shop để nhận QUÀ bí mật từ GU nhé!",
                 group = "Nữ",
-                color = listOf(ClothesColor("Đỏ", "#ff0000"), ClothesColor("Xanh ngọc", "#48bcaa"), ClothesColor("Vàng", "#ebff00")),
-                size = listOf("S", "M", "L", "XL"),
+                colors = listOf(ClothesColor("Đỏ", "#ff0000"), ClothesColor("Xanh ngọc", "#48bcaa"), ClothesColor("Vàng", "#ebff00")),
+                sizes = listOf("S", "M", "L", "XL"),
                 price = 159000,
                 sell = 2400
             ),
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Ng%E1%BB%A7%20%C3%81o%20Tay%20Ng%E1%BA%AFn%20Ph%E1%BB%91i%20Qu%E1%BA%A7n%20Short%20In%20Ho%E1%BA%A1t%20H%C3%ACnh%20Th%E1%BB%9Di%20Trang%20M%C3%B9a%20H%C3%A8%20Cho%20H%E1%BB%8Dc%20Sinh%2C%20H%E1%BB%93ng.jpg?alt=media&token=fba49b95-d6de-4f1d-bfea-7b4c846c6014",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Ng%E1%BB%A7%20%C3%81o%20Tay%20Ng%E1%BA%AFn%20Ph%E1%BB%91i%20Qu%E1%BA%A7n%20Short%20In%20Ho%E1%BA%A1t%20H%C3%ACnh%20Th%E1%BB%9Di%20Trang%20M%C3%B9a%20H%C3%A8%20Cho%20H%E1%BB%8Dc%20Sinh%2C%20V%C3%A0ng.jpg?alt=media&token=06a1c4e2-ea6b-4ba0-9be0-ac8aab0b3428",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Ng%E1%BB%A7%20%C3%81o%20Tay%20Ng%E1%BA%AFn%20Ph%E1%BB%91i%20Qu%E1%BA%A7n%20Short%20In%20Ho%E1%BA%A1t%20H%C3%ACnh%20Th%E1%BB%9Di%20Trang%20M%C3%B9a%20H%C3%A8%20Cho%20H%E1%BB%8Dc%20Sinh%2C%20X%C3%A1m.jpg?alt=media&token=d1af7348-da7c-4546-a221-be42857847bf"
@@ -171,13 +183,13 @@ class HomeFragment : Fragment() {
                         "\n" +
                         "Nếu Bạn Kiểm Tra Bất Kỳ Vấn Đề nào Khi Nhận Được Gói Hàng, Vui Lòng Liên Hệ Với Chúng Tôi Để Được Trợ Giúp, Chúng Tôi Sẽ Trả Lời Bạn Với Sự Hài Lòng.",
                 group = "Nữ",
-                color = listOf(ClothesColor("Hồng", "#fa00ff"), ClothesColor("Vàng", "#ebff00"), ClothesColor("Xám", "#aeafaf")),
-                size = listOf("M", "L", "XL", "XXL"),
+                colors = listOf(ClothesColor("Hồng", "#fa00ff"), ClothesColor("Vàng", "#ebff00"), ClothesColor("Xám", "#aeafaf")),
+                sizes = listOf("M", "L", "XL", "XXL"),
                 price = 137000,
                 sell = 648
             ),
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Nam%20AVIANO%20C%E1%BB%95%20Tr%C3%B2n%20C%E1%BB%99c%20Tay%20Ph%E1%BB%91i%20K%E1%BA%BB%20Vi%E1%BB%81n%20Tay%2C%20%C4%90%E1%BB%93%20Th%E1%BB%83%20Thao%20Nam%20Form%20D%C3%A1ng%20Basic%2C%20Tr%E1%BA%AFng.jpg?alt=media&token=f2ea9ac3-ad6d-4849-95b3-09e9d1473991",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Nam%20AVIANO%20C%E1%BB%95%20Tr%C3%B2n%20C%E1%BB%99c%20Tay%20Ph%E1%BB%91i%20K%E1%BA%BB%20Vi%E1%BB%81n%20Tay%2C%20%C4%90%E1%BB%93%20Th%E1%BB%83%20Thao%20Nam%20Form%20D%C3%A1ng%20Basic%2C%20%C4%90en.jpg?alt=media&token=d3c27263-2ccd-4345-b856-f620d941078a",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Nam%20AVIANO%20C%E1%BB%95%20Tr%C3%B2n%20C%E1%BB%99c%20Tay%20Ph%E1%BB%91i%20K%E1%BA%BB%20Vi%E1%BB%81n%20Tay%2C%20%C4%90%E1%BB%93%20Th%E1%BB%83%20Thao%20Nam%20Form%20D%C3%A1ng%20Basic%2C%20X%C3%A1m.jpg?alt=media&token=a5aab65b-16a0-4c1a-a314-919f7dedcda6"
@@ -194,13 +206,13 @@ class HomeFragment : Fragment() {
                         "\t- Màu sắc đa dạng, basic phù hợp với nhiều lứa tuổi\n" +
                         "\t- Đường may tinh tế, tỉ mỉ trong từng chi tiết.\n",
                 group = "Nam",
-                color = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Đen", "#000000"), ClothesColor("Xám", "#aeafaf")),
-                size = listOf("M", "L", "XL", "XXL"),
+                colors = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Đen", "#000000"), ClothesColor("Xám", "#aeafaf")),
+                sizes = listOf("M", "L", "XL", "XXL"),
                 price = 179000,
                 sell = 120
             ),
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/%C4%90%E1%BB%92%20B%E1%BB%98%20NAM%20TH%E1%BB%82%20THAO%20THUN%20COTTON-NLSAO%2C%20Tr%E1%BA%AFng.jpg?alt=media&token=57e97654-02ca-4cf7-913e-560236d438e1",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/%C4%90%E1%BB%92%20B%E1%BB%98%20NAM%20TH%E1%BB%82%20THAO%20THUN%20COTTON-NLSAO%2C%20Xanh%20d%C6%B0%C6%A1ng.jpg?alt=media&token=35dfbddf-4cd4-4f1c-8a54-9bb0ff965d05",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/%C4%90%E1%BB%92%20B%E1%BB%98%20NAM%20TH%E1%BB%82%20THAO%20THUN%20COTTON-NLSAO%2C%20%C4%90en.jpg?alt=media&token=64694dd2-af84-4e7b-b6c1-73e2414ecc16"
@@ -220,16 +232,16 @@ class HomeFragment : Fragment() {
                         "\t\t- Áo được kiểm tra kĩ càng, cẩn thận và tư vấn nhiệt tình trước khi gói hàng giao cho Quý Khách\n" +
                         "\t\t- Hàng có sẵn, giao hàng ngay khi nhận được đơn \n" +
                         "\t\t- Hoàn tiền nếu sản phẩm không giống với mô tả\n" +
-                        "\t\t- Chấp nhận đổi hàng khi size không vừa\n" +
+                        "\t\t- Chấp nhận đổi hàng khi sizes không vừa\n" +
                         "\t\t- Giao hàng trên toàn quốc, nhận hàng trả tiền",
                 group = "Nam",
-                color = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Xanh dương", "#1b67ff"), ClothesColor("Đen", "#000000")),
-                size = listOf("M", "L", "XL", "XXL"),
+                colors = listOf(ClothesColor("Trắng", "#ffffff"), ClothesColor("Xanh dương", "#1b67ff"), ClothesColor("Đen", "#000000")),
+                sizes = listOf("M", "L", "XL", "XXL"),
                 price = 59000,
                 sell = 23800
             ),
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20Pijama%20M%E1%BA%B7c%20Nh%C3%A0%20Qu%E1%BA%A7n%20C%E1%BB%99c%20%C3%81o%20C%E1%BB%99c%20Ch%E1%BA%A5t%20Li%E1%BB%87u%20L%E1%BB%A5a%20Satin%20Cao%20C%E1%BA%A5p%20Th%C6%B0%C6%A1ng%20Hi%E1%BB%87u%20XAVIA%20P1%2C%20%C4%90%E1%BB%8F.jpg?alt=media&token=1a10c588-38fa-4f3d-b289-8a3491edcca6",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20Pijama%20M%E1%BA%B7c%20Nh%C3%A0%20Qu%E1%BA%A7n%20C%E1%BB%99c%20%C3%81o%20C%E1%BB%99c%20Ch%E1%BA%A5t%20Li%E1%BB%87u%20L%E1%BB%A5a%20Satin%20Cao%20C%E1%BA%A5p%20Th%C6%B0%C6%A1ng%20Hi%E1%BB%87u%20XAVIA%20P1%2C%20Xanh%20ng%E1%BB%8Dc.jpg?alt=media&token=c9fc8d6a-d794-45ca-874f-05c6f13cdf20",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20Pijama%20M%E1%BA%B7c%20Nh%C3%A0%20Qu%E1%BA%A7n%20C%E1%BB%99c%20%C3%81o%20C%E1%BB%99c%20Ch%E1%BA%A5t%20Li%E1%BB%87u%20L%E1%BB%A5a%20Satin%20Cao%20C%E1%BA%A5p%20Th%C6%B0%C6%A1ng%20Hi%E1%BB%87u%20XAVIA%20P1%2C%20V%C3%A0ng.jpg?alt=media&token=60bcea6c-d7bb-40b3-bd17-0b46f7ab0bbd"
@@ -237,7 +249,7 @@ class HomeFragment : Fragment() {
                 name = "Bộ Pijama Mặc Nhà Quần Cộc Áo Cộc Chất Liệu Lụa Satin Cao Cấp Thương Hiệu XAVIA P1",
                 description =
                 "Mã SP: P1\n" +
-                        "Thông số size tham khảo:\n" +
+                        "Thông số sizes tham khảo:\n" +
                         "Size S: 37-45kg\n" +
                         "Size M: 45-53kg\n" +
                         "Size L: 53-58kg\n" +
@@ -262,13 +274,13 @@ class HomeFragment : Fragment() {
                         "\t\t- Đội ngũ luôn tư vấn tận tâm, chi tiết, hỗ trợ nhiệt tình nhất với khách hàng.\n" +
                         "\t\t- Khách yêu nhận được sản phẩm, vui lòng đánh giá 5* giúp Shop để nhận QUÀ bí mật từ GU nhé!",
                 group = "Nữ",
-                color = listOf(ClothesColor("Đỏ", "#ff0000"), ClothesColor("Xanh ngọc", "#48bcaa"), ClothesColor("Vàng", "#ebff00")),
-                size = listOf("S", "M", "L", "XL"),
+                colors = listOf(ClothesColor("Đỏ", "#ff0000"), ClothesColor("Xanh ngọc", "#48bcaa"), ClothesColor("Vàng", "#ebff00")),
+                sizes = listOf("S", "M", "L", "XL"),
                 price = 159000,
                 sell = 2400
             ),
             Clothes(
-                img = listOf(
+                imgs = listOf(
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Ng%E1%BB%A7%20%C3%81o%20Tay%20Ng%E1%BA%AFn%20Ph%E1%BB%91i%20Qu%E1%BA%A7n%20Short%20In%20Ho%E1%BA%A1t%20H%C3%ACnh%20Th%E1%BB%9Di%20Trang%20M%C3%B9a%20H%C3%A8%20Cho%20H%E1%BB%8Dc%20Sinh%2C%20H%E1%BB%93ng.jpg?alt=media&token=fba49b95-d6de-4f1d-bfea-7b4c846c6014",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Ng%E1%BB%A7%20%C3%81o%20Tay%20Ng%E1%BA%AFn%20Ph%E1%BB%91i%20Qu%E1%BA%A7n%20Short%20In%20Ho%E1%BA%A1t%20H%C3%ACnh%20Th%E1%BB%9Di%20Trang%20M%C3%B9a%20H%C3%A8%20Cho%20H%E1%BB%8Dc%20Sinh%2C%20V%C3%A0ng.jpg?alt=media&token=06a1c4e2-ea6b-4ba0-9be0-ac8aab0b3428",
                     "https://firebasestorage.googleapis.com/v0/b/sellclothes-c92e4.appspot.com/o/B%E1%BB%99%20%C4%90%E1%BB%93%20Ng%E1%BB%A7%20%C3%81o%20Tay%20Ng%E1%BA%AFn%20Ph%E1%BB%91i%20Qu%E1%BA%A7n%20Short%20In%20Ho%E1%BA%A1t%20H%C3%ACnh%20Th%E1%BB%9Di%20Trang%20M%C3%B9a%20H%C3%A8%20Cho%20H%E1%BB%8Dc%20Sinh%2C%20X%C3%A1m.jpg?alt=media&token=d1af7348-da7c-4546-a221-be42857847bf"
@@ -311,8 +323,8 @@ class HomeFragment : Fragment() {
                         "\n" +
                         "Nếu Bạn Kiểm Tra Bất Kỳ Vấn Đề nào Khi Nhận Được Gói Hàng, Vui Lòng Liên Hệ Với Chúng Tôi Để Được Trợ Giúp, Chúng Tôi Sẽ Trả Lời Bạn Với Sự Hài Lòng.",
                 group = "Nữ",
-                color = listOf(ClothesColor("Hồng", "#fa00ff"), ClothesColor("Vàng", "#ebff00"), ClothesColor("Xám", "#aeafaf")),
-                size = listOf("M", "L", "XL", "XXL"),
+                colors = listOf(ClothesColor("Hồng", "#fa00ff"), ClothesColor("Vàng", "#ebff00"), ClothesColor("Xám", "#aeafaf")),
+                sizes = listOf("M", "L", "XL", "XXL"),
                 price = 137000,
                 sell = 648
             )

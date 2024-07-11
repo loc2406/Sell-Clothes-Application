@@ -64,4 +64,19 @@
     <string name="Address_title">Địa chỉ:</string>
     <string name="Phone_title">Số điện thoại:</string>
     <string name="Clothes_group">Đối tượng sử dụng</string>
+    <string name="Sell_title">Đã bán:</string>
+    <string name="Comment_title">Bình luận:</string>
+    <string name="Star">Sao</string>
+    <string name="Comment_value_regex">: %d bình luận.</string>
+    <string name="_5">5</string>
+    <string name="_4">4</string>
+    <string name="_3">3</string>
+    <string name="_2">2</string>
+    <string name="_1">1</string>
+    <string name="Favorite">Sở thích</string>
+    <string name="Dont_have_comment">Không có bình luận</string>
+    <string name="Quantity">Số lượng</string>
+    <string name="Quantity_title">"Số lượng: "</string>
+    <string name="plus">+</string>
+    <string name="sub">-</string>
 </resources>

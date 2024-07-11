@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout>
+    <data>
+
+    </data>
+    <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tool="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/ic_user"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:contentDescription="@string/User_img"
+            android:scaleType="centerInside"
+            android:src="@drawable/ic_user"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/assessor"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="5dp"
+            android:ellipsize="end"
+            android:fontFamily="@font/tinos_bold"
+            android:lines="1"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="@id/ic_user"
+            app:layout_constraintEnd_toStartOf="@id/star_space"
+            app:layout_constraintStart_toEndOf="@id/ic_user"
+            app:layout_constraintTop_toTopOf="@id/ic_user"
+            tool:text="Tên người đánh giá" />
+
+        <LinearLayout
+            android:id="@+id/star_space"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/assessor"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <ImageView
+                android:id="@+id/first_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:contentDescription="@string/Star"
+                android:scaleType="centerInside"
+                tool:src="@drawable/ic_star_empty" />
+
+            <ImageView
+                android:id="@+id/second_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/Star"
+                android:scaleType="centerInside"
+                tool:src="@drawable/ic_star_empty" />
+
+            <ImageView
+                android:id="@+id/third_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/Star"
+                android:scaleType="centerInside"
+                tool:src="@drawable/ic_star_empty" />
+
+            <ImageView
+                android:id="@+id/fouth_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/Star"
+                android:scaleType="centerInside"
+                tool:src="@drawable/ic_star_empty" />
+
+            <ImageView
+                android:id="@+id/fifth_star"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginStart="2dp"
+                android:contentDescription="@string/Star"
+                android:scaleType="centerInside"
+                tool:src="@drawable/ic_star_empty" />
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/content"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="10dp"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="13sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/ic_user"
+            tool:text="Nội dung đánh giá" />
+
+        <TextView
+            android:id="@+id/favorite_value"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:textColor="@color/black"
+            android:textSize="11sp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/content"
+            tool:text="Số lượt thích" />
+
+        <ImageView
+            android:id="@+id/ic_favorite"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginEnd="5dp"
+            android:contentDescription="@string/Favorite"
+            android:src="@drawable/ic_favorite_unchecked"
+            app:layout_constraintBottom_toBottomOf="@id/favorite_value"
+            app:layout_constraintEnd_toStartOf="@id/favorite_value"
+            app:layout_constraintTop_toTopOf="@id/favorite_value" />
+
+        <TextView
+            android:id="@+id/time"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textColor="@color/blue"
+            android:textSize="11sp"
+            android:fontFamily="@font/tinos_italic"
+            app:layout_constraintBottom_toBottomOf="@id/favorite_value"
+            app:layout_constraintEnd_toStartOf="@id/ic_favorite"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/favorite_value"
+            tool:text="Thời gian đánh giá" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

@@ -32,9 +32,12 @@ class CartFragment: Fragment() {
         private val listClothes: MutableLiveData<List<SellClothes>> = MutableLiveData(emptyList())
 
         fun add(newClothes: SellClothes){
-           if (listClothes.value!!.contains(newClothes)){
-               val existedClothes = listClothes.value!!.find { clothes -> clothes == newClothes  }!!
-               existedClothes.quality += 1
+            val existedClothes = listClothes.value!!.find { clothes ->
+                clothes.name == newClothes.name && clothes.size == newClothes.size && clothes.color == newClothes.color
+            }
+
+           if (existedClothes != null){
+               existedClothes.quantity += newClothes.quantity
                listClothes.value = listClothes.value
            }
             else{

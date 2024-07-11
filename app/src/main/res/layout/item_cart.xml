@@ -53,11 +53,11 @@
             android:fontFamily="@font/tinos_bold"
             app:layout_constraintStart_toEndOf="@id/img_space"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/quality"
+            app:layout_constraintEnd_toStartOf="@id/quantity"
             android:layout_marginHorizontal="10dp"/>
 
         <TextView
-            android:id="@+id/quality"
+            android:id="@+id/quantity"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             tool:text="x1"

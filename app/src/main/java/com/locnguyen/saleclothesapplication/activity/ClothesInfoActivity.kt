@@ -1,40 +1,59 @@
 package com.locnguyen.saleclothesapplication.activity
 
 import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
-import android.util.Log
-import android.view.LayoutInflater
+import android.text.Spannable
+import android.text.SpannableStringBuilder
+import android.text.style.ForegroundColorSpan
+import android.text.style.StyleSpan
 import android.view.View
-import android.widget.ImageButton
+import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.LinearLayout
-import android.widget.RadioGroup.LayoutParams
 import android.widget.TextView
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.compose.material3.HorizontalDivider
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.locnguyen.saleclothesapplication.R
-import com.locnguyen.saleclothesapplication.application.Application
+import com.locnguyen.saleclothesapplication.adapter.AutoLoadImgAdapter
+import com.locnguyen.saleclothesapplication.adapter.CommentAdapter
 import com.locnguyen.saleclothesapplication.application.DataLocal
 import com.locnguyen.saleclothesapplication.databinding.ClothesInfoActivityBinding
 import com.locnguyen.saleclothesapplication.fragment.CartFragment
 import com.locnguyen.saleclothesapplication.model.Clothes
 import com.locnguyen.saleclothesapplication.model.ClothesColor
+import com.locnguyen.saleclothesapplication.model.Comment
 import com.locnguyen.saleclothesapplication.model.SellClothes
 import com.locnguyen.saleclothesapplication.viewmodel.ClothesInfoVM
-import java.text.NumberFormat
-import java.util.Locale
+import java.util.Timer
+import java.util.TimerTask
+import java.util.concurrent.Executor
 
 class ClothesInfoActivity : AppCompatActivity() {
 
+    private val clothesColorIds: ArrayList<Int> by lazy { ArrayList() }
+    private val clothesSizeIds: ArrayList<Int> by lazy { ArrayList() }
+    private val autoLoadImgTimer: Timer by lazy { Timer() }
+    private val autoLoadImgExecutor: Executor by lazy { ContextCompat.getMainExecutor(this) }
+    private var selectedColor: ClothesColor = ClothesColor()
+    private var selectedImg: String = ""
+    private var selectedSize: String = ""
+
+    private lateinit var autoLoadImgAdapter: AutoLoadImgAdapter
     private lateinit var binding: ClothesInfoActivityBinding
     private lateinit var clothesInfoVM: ClothesInfoVM
-    private val clothesColorIds: ArrayList<Int> by lazy { ArrayList() }
+    private lateinit var commentAdapter: CommentAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -50,45 +69,172 @@ class ClothesInfoActivity : AppCompatActivity() {
         initObserves()
     }
 
-    private fun bindView(clothes: Clothes) {
-        binding.apply {
-            DataLocal.getInstance().bindImg(this@ClothesInfoActivity, clothes.img[0], clothesImg)
+    private fun bindClothesOnView(clothes: Clothes) {
+        bindListImg(clothes.imgs)
+        bindListColor(clothes.colors)
+        bindListSize(clothes.sizes)
 
+        binding.apply {
             clothesName.text = clothes.name
+            clothesSellValue.text = clothes.sell.toString()
             clothesGroupValue.text = clothes.group
             clothesDescriptionValue.text = clothes.description
-
-            val density = DataLocal.getInstance().densityValue
-            val linearParam = LinearLayout.LayoutParams((30 * density).toInt(), (30 * density).toInt()).apply {
-                    setMargins((10 * density).toInt(), 0, 0, 0)
-                }
-            clothes.color.forEach { color ->
-                val colorView = layoutInflater.inflate(R.layout.item_clothes_color, clothesColorSpace, false)
-
-                colorView.apply {
-                        val randomId = View.generateViewId()
-                        clothesColorIds.add(randomId)
-
-                        id = randomId
-                        layoutParams = linearParam
-
-                        findViewById<ImageButton>(R.id.clothes_color)?.apply{
-                            setBackgroundColor(Color.parseColor(color.hexCode))
-                            setOnClickListener {
-                                this@ClothesInfoActivity.clothesInfoVM.selectColor(randomId)
-                            }
-                        }
-                    }
-                clothesColorSpace.addView(colorView)
-            }
-
-            firstSize.text = clothes.size[0]
-            secondSize.text = clothes.size[1]
-            thirdSize.text = clothes.size[2]
-
             val numberFormat = DataLocal.getInstance().priceFormat
             val formattedNumber = numberFormat.format(clothes.price)
             clothesPrice.text = getString(R.string.Price_regex, formattedNumber)
+        }
+
+        bindComment(clothes.comments)
+    }
+
+    private fun bindComment(comments: List<Comment>) {
+        val builder = SpannableStringBuilder()
+        val blackColorSpan = ForegroundColorSpan(Color.BLACK)
+        val boldTextSpan = StyleSpan(Typeface.BOLD)
+
+        builder.append(getString(R.string.Comment_title))
+        builder.setSpan(boldTextSpan, 0, builder.length, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
+        val endTitle = builder.length
+
+        builder.append(" ${comments.size} bình luận.")
+        builder.setSpan(
+            blackColorSpan,
+            endTitle,
+            builder.length,
+            Spannable.SPAN_EXCLUSIVE_EXCLUSIVE
+        )
+        binding.clothesCommentTitle.text = builder
+
+        binding.fiveStarValue.text = getString(
+            R.string.Comment_value_regex,
+            comments.filter { comment -> comment.star == 5 }.size
+        )
+        binding.fourStarValue.text = getString(
+            R.string.Comment_value_regex,
+            comments.filter { comment -> comment.star == 4 }.size
+        )
+        binding.threeStarValue.text = getString(
+            R.string.Comment_value_regex,
+            comments.filter { comment -> comment.star == 3 }.size
+        )
+        binding.twoStarValue.text = getString(
+            R.string.Comment_value_regex,
+            comments.filter { comment -> comment.star == 2 }.size
+        )
+        binding.oneStarValue.text = getString(
+            R.string.Comment_value_regex,
+            comments.filter { comment -> comment.star == 1 }.size
+        )
+
+        commentAdapter = CommentAdapter(comments)
+
+        binding.listComment.apply {
+            setHasFixedSize(true)
+            layoutManager = LinearLayoutManager(this@ClothesInfoActivity)
+            addItemDecoration(
+                DividerItemDecoration(
+                    this@ClothesInfoActivity,
+                    DividerItemDecoration.VERTICAL
+                )
+            )
+            adapter = commentAdapter
+        }
+    }
+
+    private fun bindListSize(sizes: List<String>) {
+        val density = DataLocal.getInstance().densityValue
+        val itemSizeParam = LinearLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT
+        ).apply {
+            setMargins((10 * density).toInt(), 0, 0, 0)
+        }
+
+        binding.apply {
+            sizes.forEach { size ->
+                val itemSize = layoutInflater.inflate(
+                    R.layout.item_clothes_size,
+                    clothesSizeSpace,
+                    false
+                ) as TextView?
+
+                itemSize?.apply {
+                    val randomId = View.generateViewId()
+                    clothesSizeIds.add(randomId)
+
+                    id = randomId
+                    layoutParams = itemSizeParam
+                    text = size
+
+                    setOnClickListener {
+                        this@ClothesInfoActivity.clothesInfoVM.selectSize(randomId)
+                    }
+                }
+                clothesSizeSpace.addView(itemSize)
+            }
+        }
+    }
+
+    private fun bindListColor(colors: List<ClothesColor>) {
+        val density = DataLocal.getInstance().densityValue
+        val itemColorParam =
+            LinearLayout.LayoutParams((30 * density).toInt(), (30 * density).toInt()).apply {
+                setMargins((10 * density).toInt(), 0, 0, 0)
+            }
+
+        binding.apply {
+            colors.forEach { color ->
+                val itemColor =
+                    layoutInflater.inflate(R.layout.item_clothes_color, clothesColorSpace, false)
+
+                itemColor.apply {
+                    val randomId = View.generateViewId()
+                    clothesColorIds.add(randomId)
+
+                    id = randomId
+                    layoutParams = itemColorParam
+
+                    findViewById<ImageView>(R.id.clothes_color)?.apply {
+                        setBackgroundColor(Color.parseColor(color.hexCode))
+                        setOnClickListener {
+                            this@ClothesInfoActivity.clothesInfoVM.selectColor(randomId)
+                        }
+                    }
+                }
+                clothesColorSpace.addView(itemColor)
+            }
+        }
+    }
+
+    private fun bindListImg(imgs: List<String>) {
+        binding.apply {
+            autoLoadImgAdapter = AutoLoadImgAdapter(imgs)
+            clothesImgSpace.adapter = autoLoadImgAdapter
+
+            imgIndicator.apply {
+                setViewPager(clothesImgSpace)
+                tintIndicator(
+                    resources.getColor(R.color.blue, null),
+                    resources.getColor(R.color.black, null)
+                )
+            }
+            autoLoadImgAdapter.registerAdapterDataObserver(imgIndicator.adapterDataObserver)
+
+            autoLoadImgTimer.schedule(object : TimerTask() {
+                override fun run() {
+                    autoLoadImgExecutor.execute {
+                        var currentImg = clothesImgSpace.currentItem
+                        val totalImgs = imgs.size - 1
+
+                        if (currentImg < totalImgs) {
+                            currentImg++
+                            clothesImgSpace.currentItem = currentImg
+                        } else {
+                            clothesImgSpace.currentItem = 0
+                        }
+                    }
+                }
+            }, 1000, 3000)
         }
     }
 
@@ -103,7 +249,7 @@ class ClothesInfoActivity : AppCompatActivity() {
     private fun initObserves() {
         clothesInfoVM.clothes.observe(this) { clothes ->
             clothes?.let {
-                bindView(it)
+                bindClothesOnView(it)
             } ?: let {
                 Toast.makeText(this, "Không thể xem thông tin quần áo!", Toast.LENGTH_SHORT).show()
             }
@@ -115,12 +261,16 @@ class ClothesInfoActivity : AppCompatActivity() {
             }
         }
 
-        clothesInfoVM.selectedColor.observe(this) { viewId ->
+        clothesInfoVM.selectedColorId.observe(this) { viewId ->
             setClothesColorSelected(viewId)
         }
 
-        clothesInfoVM.selectedSize.observe(this) { viewId ->
+        clothesInfoVM.selectedSizeId.observe(this) { viewId ->
             setClothesSizeSelected(viewId)
+        }
+
+        clothesInfoVM.selectedFilterId.observe(this) { filterId ->
+            setCommentFilter(filterId)
         }
 
         clothesInfoVM.addCart.observe(this) { isAdded ->
@@ -130,121 +280,257 @@ class ClothesInfoActivity : AppCompatActivity() {
         }
     }
 
-    private fun handleAddToCart() {
-        val dialog = AlertDialog.Builder(this)
-            .setTitle("Xác nhận thêm giỏ hàng")
-            .setMessage("Bạn có chắc muốn thêm vào giỏ hàng chứ!")
-            .setCancelable(false)
-            .setNegativeButton("Hủy") { dialog, which ->
-                dialog.dismiss()
-            }
-            .setPositiveButton("Đồng ý") { dialog, which ->
-                val selectedColor = getSelectedColor()
-                val selectedImg = getImgOfSelectedColor(selectedColor)
+    private fun setCommentFilter(filterId: Int) {
+        when (filterId) {
+            R.id.filter_all -> {
+                setSelectedFilter(null, binding.filterAll, null)
+                setUnSelectedFilter(binding.filterFiveStar, binding.fiveStarTitle, binding.fiveStarValue)
+                setUnSelectedFilter(binding.filterFourStar, binding.fourStarTitle, binding.fourStarValue)
+                setUnSelectedFilter(binding.filterThreeStar, binding.threeStarTitle, binding.threeStarValue)
+                setUnSelectedFilter(binding.filterTwoStar, binding.twoStarTitle, binding.twoStarValue)
+                setUnSelectedFilter(binding.filterOneStar, binding.oneStarTitle, binding.oneStarValue)
 
-                CartFragment.add(
-                    SellClothes(
+                val filterList = clothesInfoVM.clothes.value!!.comments
+                if (filterList.isEmpty()) {
+                    clothesInfoVM.setHaveCommentsValue(false)
+                } else {
+                    commentAdapter.setFilterList(filterList)
+                    clothesInfoVM.setHaveCommentsValue(true)
+                }
+            }
+
+            R.id.filter_five_star -> {
+                setSelectedFilter(binding.filterFiveStar, binding.fiveStarTitle, binding.fiveStarValue)
+                setUnSelectedFilter(null, binding.filterAll, null)
+                setUnSelectedFilter(binding.filterFourStar, binding.fourStarTitle, binding.fourStarValue)
+                setUnSelectedFilter(binding.filterThreeStar, binding.threeStarTitle, binding.threeStarValue)
+                setUnSelectedFilter(binding.filterTwoStar, binding.twoStarTitle, binding.twoStarValue)
+                setUnSelectedFilter(binding.filterOneStar, binding.oneStarTitle, binding.oneStarValue)
+
+                val filterList = clothesInfoVM.clothes.value!!.comments.filter { comment -> comment.star == 5 }
+                commentAdapter.setFilterList(filterList)
+
+                if (filterList.isEmpty()) {
+                    clothesInfoVM.setHaveCommentsValue(false)
+                } else {
+                    clothesInfoVM.setHaveCommentsValue(true)
+                }
+            }
+
+            R.id.filter_four_star -> {
+                setSelectedFilter(binding.filterFourStar, binding.fourStarTitle, binding.fourStarValue)
+                setUnSelectedFilter(null, binding.filterAll, null)
+                setUnSelectedFilter(binding.filterFiveStar, binding.fiveStarTitle, binding.fiveStarValue)
+                setUnSelectedFilter(binding.filterThreeStar, binding.threeStarTitle, binding.threeStarValue)
+                setUnSelectedFilter(binding.filterTwoStar, binding.twoStarTitle, binding.twoStarValue)
+                setUnSelectedFilter(binding.filterOneStar, binding.oneStarTitle, binding.oneStarValue)
+
+                val filterList =
+                    clothesInfoVM.clothes.value!!.comments.filter { comment -> comment.star == 4 }
+                commentAdapter.setFilterList(filterList)
+
+                if (filterList.isEmpty()) {
+                    clothesInfoVM.setHaveCommentsValue(false)
+                } else {
+                    clothesInfoVM.setHaveCommentsValue(true)
+                }
+            }
+
+            R.id.filter_three_star -> {
+                setSelectedFilter(binding.filterThreeStar, binding.threeStarTitle, binding.threeStarValue)
+                setUnSelectedFilter(null, binding.filterAll, null)
+                setUnSelectedFilter(binding.filterFiveStar, binding.fiveStarTitle, binding.fiveStarValue)
+                setUnSelectedFilter(binding.filterFourStar, binding.fourStarTitle, binding.fourStarValue)
+                setUnSelectedFilter(binding.filterTwoStar, binding.twoStarTitle, binding.twoStarValue)
+                setUnSelectedFilter(binding.filterOneStar, binding.oneStarTitle, binding.oneStarValue)
+
+                val filterList =
+                    clothesInfoVM.clothes.value!!.comments.filter { comment -> comment.star == 3 }
+                commentAdapter.setFilterList(filterList)
+
+                if (filterList.isEmpty()) {
+                    clothesInfoVM.setHaveCommentsValue(false)
+                } else {
+                    clothesInfoVM.setHaveCommentsValue(true)
+                }
+            }
+
+            R.id.filter_two_star -> {
+                setSelectedFilter(binding.filterTwoStar, binding.twoStarTitle, binding.twoStarValue)
+                setUnSelectedFilter(null, binding.filterAll, null)
+                setUnSelectedFilter(
+                    binding.filterFiveStar,
+                    binding.fiveStarTitle,
+                    binding.fiveStarValue
+                )
+                setUnSelectedFilter(
+                    binding.filterFourStar,
+                    binding.fourStarTitle,
+                    binding.fourStarValue
+                )
+                setUnSelectedFilter(
+                    binding.filterThreeStar,
+                    binding.threeStarTitle,
+                    binding.threeStarValue
+                )
+                setUnSelectedFilter(
+                    binding.filterOneStar,
+                    binding.oneStarTitle,
+                    binding.oneStarValue
+                )
+
+                val filterList =
+                    clothesInfoVM.clothes.value!!.comments.filter { comment -> comment.star == 2 }
+                commentAdapter.setFilterList(filterList)
+
+                if (filterList.isEmpty()) {
+                    clothesInfoVM.setHaveCommentsValue(false)
+                } else {
+                    clothesInfoVM.setHaveCommentsValue(true)
+                }
+            }
+
+            R.id.filter_one_star -> {
+                setSelectedFilter(binding.filterOneStar, binding.oneStarTitle, binding.oneStarValue)
+                setUnSelectedFilter(null, binding.filterAll, null)
+                setUnSelectedFilter(binding.filterFiveStar, binding.fiveStarTitle, binding.fiveStarValue)
+                setUnSelectedFilter(binding.filterFourStar, binding.fourStarTitle, binding.fourStarValue)
+                setUnSelectedFilter(binding.filterThreeStar, binding.threeStarTitle, binding.threeStarValue)
+                setUnSelectedFilter(binding.filterTwoStar, binding.twoStarTitle, binding.twoStarValue)
+
+                val filterList = clothesInfoVM.clothes.value!!.comments.filter { comment -> comment.star == 1 }
+                commentAdapter.setFilterList(filterList)
+
+                if (filterList.isEmpty()) {
+                    clothesInfoVM.setHaveCommentsValue(false)
+                } else {
+                    clothesInfoVM.setHaveCommentsValue(true)
+                }
+            }
+        }
+    }
+
+    private fun setSelectedFilter(viewGroup: LinearLayout?, title: TextView?, value: TextView?) {
+        viewGroup?.setBackgroundResource(R.drawable.background_blue_rectangle_10dp_4_corners)
+        title?.let {
+            it.setTextColor(Color.WHITE)
+            if (it.id == R.id.filter_all) {
+                it.setBackgroundResource(R.drawable.background_blue_rectangle_10dp_4_corners)
+            }
+        }
+        value?.setTextColor(Color.WHITE)
+    }
+
+    private fun setUnSelectedFilter(viewGroup: LinearLayout?, title: TextView?, value: TextView?) {
+        viewGroup?.setBackgroundResource(R.drawable.background_white_rectangle_10dp_4_corners_1dp_blue_stroke)
+        title?.let {
+            it.setTextColor(Color.BLACK)
+            if (it.id == R.id.filter_all) {
+                it.setBackgroundResource(R.drawable.background_white_rectangle_10dp_4_corners_1dp_blue_stroke)
+            }
+        }
+        value?.setTextColor(Color.BLACK)
+    }
+
+    private fun handleAddToCart() {
+        if (selectedImg.isEmpty() || selectedSize.isEmpty()|| clothesInfoVM.clothesQuantity.value!!.toInt() == 0) {
+            Toast.makeText(this, "Vui lòng chọn đầy đủ thông tin sản phẩm!", Toast.LENGTH_SHORT)
+                .show()
+        } else {
+            AlertDialog.Builder(this, R.style.MyAlertDialog)
+                .setTitle("Xác nhận thêm giỏ hàng")
+                .setMessage("Bạn có chắc muốn thêm vào giỏ hàng chứ!")
+                .setCancelable(false)
+                .setNegativeButton("Hủy") { dialog, which ->
+                    dialog.dismiss()
+                }
+                .setPositiveButton("Đồng ý") { dialog, which ->
+
+                    val newSellClothes = SellClothes(
                         img = selectedImg,
                         name = clothesInfoVM.clothes.value!!.name,
                         group = clothesInfoVM.clothes.value!!.group,
                         description = clothesInfoVM.clothes.value!!.description,
-                        size = getSelectedSize(),
+                        size = selectedSize,
                         price = clothesInfoVM.clothes.value!!.price,
-                        quality = 1,
-                        color = selectedColor,
+                        quantity = clothesInfoVM.clothesQuantity.value!!,
+                        color = selectedColor
                     )
-                )
-                Toast.makeText(this, "Đã thêm giỏ hàng thành công!", Toast.LENGTH_SHORT).show()
-            }
-            .show()
 
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.blue))
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.blue))
-    }
+                    clothesInfoVM.isExistedClothes(newSellClothes).observe(this) { isExisted ->
+                        when (isExisted) {
+                            true -> clothesInfoVM.updateClothesQuantity("${newSellClothes.name}, màu ${newSellClothes.color.name}, size ${newSellClothes.size}", newSellClothes.quantity)
+                                .observe(this){ isUpdated ->
+                                when(isUpdated){
+                                    true -> showToast("Đã thêm giỏ hàng thành công!")
+                                    false -> showToast("Đã thêm giỏ hàng thất bại!")
+                                }
+                            }
 
-    private fun getImgOfSelectedColor(selectedColor: ClothesColor): String {
-        return clothesInfoVM.getImgName(
-            clothesInfoVM.clothes.value!!.img,
-            clothesInfoVM.clothes.value!!.name,
-            selectedColor.name
-        )
+                            false -> clothesInfoVM.addClothesToCart(newSellClothes)
+                                .observe(this) { isAdded ->
+                                    when (isAdded) {
+                                        true -> showToast("Đã thêm giỏ hàng thành công!")
+                                        false -> showToast("Đã thêm giỏ hàng thất bại!")
+                                    }
+                                }
+                        }
+                    }
+                }
+                .show()
+        }
     }
 
     private fun setClothesSizeSelected(viewId: Int) {
-        when (viewId) {
-            R.id.first_size -> {
-                setSizeSelected(binding.firstSize)
-                setSizeUnselected(binding.secondSize)
-                setSizeUnselected(binding.thirdSize)
+        for (i in 0..<clothesSizeIds.size) {
+            val selectedSizeView = findViewById<TextView>(clothesSizeIds[i])
+
+            if (clothesSizeIds[i] == viewId) {
+                selectedSizeView?.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.background_clothes_size_selected,
+                    null
+                )
+                selectedSizeView?.setTextColor(Color.WHITE)
+                selectedSize = clothesInfoVM.clothes.value!!.sizes[i]
+            } else {
+                selectedSizeView?.background = ResourcesCompat.getDrawable(
+                    resources,
+                    R.drawable.background_clothes_size_unselected,
+                    null
+                )
+                selectedSizeView?.setTextColor(Color.BLACK)
             }
-
-            R.id.second_size -> {
-                setSizeSelected(binding.secondSize)
-                setSizeUnselected(binding.firstSize)
-                setSizeUnselected(binding.thirdSize)
-            }
-
-            R.id.third_size -> {
-                setSizeSelected(binding.thirdSize)
-                setSizeUnselected(binding.secondSize)
-                setSizeUnselected(binding.firstSize)
-            }
-        }
-    }
-
-    private fun setSizeUnselected(view: TextView) {
-        view.apply {
-            background = ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.background_clothes_size_unchecked,
-                null
-            )
-            setTextColor(resources.getColor(R.color.black, null))
-        }
-    }
-
-    private fun setSizeSelected(view: TextView) {
-        view.apply {
-            background = ResourcesCompat.getDrawable(
-                resources,
-                R.drawable.background_clothes_size_checked,
-                null
-            )
-            setTextColor(resources.getColor(R.color.white, null))
         }
     }
 
     private fun setClothesColorSelected(viewId: Int) {
-        clothesColorIds.forEach { id ->
-            val colorImgButt = findViewById<CardView>(id)?.findViewById<ImageButton>(R.id.clothes_color)
+        for (i in 0..<clothesColorIds.size) {
+            val selectedColorView =
+                findViewById<CardView>(clothesColorIds[i])?.findViewById<ImageView>(R.id.clothes_color)
 
-            if (id == viewId) {
-                colorImgButt?.setImageDrawable(
+            if (clothesColorIds[i] == viewId) {
+                selectedColorView?.setImageDrawable(
                     ResourcesCompat.getDrawable(
                         resources,
                         R.drawable.clothes_color_selected,
                         null
                     )
                 )
+                binding.clothesImgSpace.currentItem = i
+                selectedColor = clothesInfoVM.clothes.value!!.colors[i]
+                selectedImg = clothesInfoVM.clothes.value!!.imgs[i]
             } else {
-                colorImgButt?.setImageDrawable(null)
+                selectedColorView?.setImageDrawable(null)
             }
         }
     }
 
-    private fun getSelectedColor(): ClothesColor {
-        return when (clothesInfoVM.selectedColor.value) {
-            R.id.first_color -> clothesInfoVM.clothes.value!!.color[0]
-            R.id.second_color -> clothesInfoVM.clothes.value!!.color[1]
-            else -> clothesInfoVM.clothes.value!!.color[2]
-        }
-    }
-
-    private fun getSelectedSize(): String {
-        return when (clothesInfoVM.selectedSize.value) {
-            R.id.first_size -> clothesInfoVM.clothes.value!!.size[0]
-            R.id.second_size -> clothesInfoVM.clothes.value!!.size[1]
-            else -> clothesInfoVM.clothes.value!!.size[2]
-        }
+    private fun showToast(message: String){
+        Toast.makeText(
+            this,
+            message,
+            Toast.LENGTH_SHORT
+        ).show()
     }
 }

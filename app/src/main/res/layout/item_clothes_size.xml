@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@drawable/background_clothes_size_unselected"
+    android:fontFamily="@font/tinos_bold"
+    android:paddingHorizontal="20dp"
+    android:paddingVertical="5dp"
+    android:textColor="@color/black"
+    android:textSize="14sp"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

@@ -80,4 +80,10 @@ class DataLocal{
             .into(view)
     }
 
+    fun bindImgWithoutPlaceHolder(context: Context, img: String, view: ImageView){
+        Glide.with(context)
+            .load(img)
+            .error(R.drawable.ic_loading_err)
+            .into(view)
+    }
 }

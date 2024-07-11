@@ -86,4 +86,7 @@ dependencies {
     implementation(libs.firebase.analytics)
     implementation(libs.androidx.cardview)
     implementation(libs.glide)
+    implementation(libs.circleindicator)
+    implementation(libs.androidx.navigation.fragment.ktx)
+    implementation(libs.androidx.navigation.ui.ktx)
 }

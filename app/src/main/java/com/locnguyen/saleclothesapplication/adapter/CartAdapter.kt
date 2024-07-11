@@ -64,7 +64,7 @@ class CartAdapter(private var list: List<SellClothes>) : RecyclerView.Adapter<Ca
         }
 
         holder.binding.name.text = data.name
-        holder.binding.quality.text = context.getString(R.string.Quality_regex, data.quality)
+        holder.binding.quantity.text = context.getString(R.string.Quality_regex, data.quantity)
         holder.binding.size.text = context.getString(R.string.Size_regex, data.size)
         holder.binding.color.setBackgroundColor(Color.parseColor(data.color.hexCode))
 
