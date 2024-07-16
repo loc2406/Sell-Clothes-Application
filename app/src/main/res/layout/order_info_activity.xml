@@ -65,7 +65,7 @@
                 android:layout_marginStart="20dp"
                 android:layout_marginTop="30dp"
                 android:contentDescription="@string/List_clothes_in_bill"
-                android:src="@drawable/ic_create_bill"
+                android:src="@drawable/ic_create_bill_white"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/title" />
 

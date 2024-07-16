@@ -230,7 +230,7 @@ class UserRepo {
                     if (snapshot.exists()) {
                         snapshot.children.forEach { clothesSnapshot ->
                             val clothesValue = clothesSnapshot.getValue(SellClothes::class.java)
-                            val isSameClothes = clothesValue?.isSameType(clothes) ?: false
+                            val isSameClothes = (clothesValue == clothes)
 
                             if (isSameClothes) {
                                 isExisted.value = true
@@ -278,6 +278,66 @@ class UserRepo {
             })
 
         return isUpdated
+    }
+
+    fun getListClothesInCart(): LiveData<List<SellClothes>> {
+       val listLD: MutableLiveData<List<SellClothes>> = MutableLiveData(emptyList())
+        val list: ArrayList<SellClothes> = ArrayList()
+
+        userCartRef.addValueEventListener(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                list.clear()
+
+                if(snapshot.hasChildren()){
+                    snapshot.children.forEach { clothesSnapshot ->
+                        val clothesValue = clothesSnapshot.getValue(SellClothes::class.java)
+
+                        clothesValue?.let { list.add(it) }
+                    }
+
+                    listLD.value = list
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {}
+        })
+
+        return listLD
+    }
+
+    fun removeFromCart(clothes: SellClothes): LiveData<Boolean> {
+        val isRemoved: MutableLiveData<Boolean> = MutableLiveData()
+
+        userCartRef.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (snapshot.hasChildren()){
+                    snapshot.children.forEach { clothesSnapshot ->
+                        val clothesValue = clothesSnapshot.getValue(SellClothes::class.java)
+
+                        clothesValue?.let {
+                            if (it == clothes){
+                                userCartRef.child("${clothes.name}, màu ${clothes.color.name}, size ${clothes.size}").setValue(null)
+                                    .addOnSuccessListener {
+                                        isRemoved.value =true
+                                    }
+                                    .addOnFailureListener{
+                                        isRemoved.value = false
+                                    }
+                            }
+                        }
+                    }
+                }
+                else{
+                    isRemoved.value = false
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                isRemoved.value = false
+            }
+        })
+
+        return isRemoved
     }
 
 }

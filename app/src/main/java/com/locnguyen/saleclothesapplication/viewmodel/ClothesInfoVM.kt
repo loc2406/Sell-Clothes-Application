@@ -32,7 +32,7 @@ class ClothesInfoVM: ViewModel() {
 
     val haveComments: MutableLiveData<Boolean> by lazy { MutableLiveData(false) }
 
-    private val _clothesQuantity: MutableLiveData<Long> by lazy { MutableLiveData(0) }
+    private val _clothesQuantity: MutableLiveData<Long> by lazy { MutableLiveData(1) }
     val clothesQuantity: LiveData<Long> by lazy{_clothesQuantity}
 
     fun back(){

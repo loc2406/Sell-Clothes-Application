@@ -1,83 +1,76 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:app="http://schemas.android.com/apk/res-auto">
+<layout xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
     <data>
         <variable
             name="mainVM"
             type="com.locnguyen.saleclothesapplication.viewmodel.MainVM" />
+        <import type="android.view.View"/>
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
-
-        <ImageButton
-            android:id="@+id/remove_cart"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:contentDescription="@string/Remove_clothes"
-            android:src="@drawable/ic_remove_cart"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:onClick="@{() -> mainVM.setDeleteState()}"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="@id/Cart_title"
-            app:layout_constraintEnd_toStartOf="@id/Cart_title"
-            app:layout_constraintBottom_toBottomOf="@id/Cart_title"
-            android:layout_marginStart="20dp"/>
+        android:layout_height="match_parent"
+        android:background="@color/blue">
 
         <TextView
-            android:id="@+id/Cart_title"
-            android:layout_width="0dp"
+            android:id="@+id/cart_title"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/Cart"
+            android:text="@string/Sum_title"
             android:textSize="20sp"
-            android:textColor="@color/black"
+            android:textColor="@color/white"
             android:fontFamily="@font/tinos_bold"
-            app:layout_constraintStart_toEndOf="@id/remove_cart"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintEnd_toStartOf="@id/confirm_delete_cart"
-            android:layout_marginTop="20dp"
+            app:layout_constraintEnd_toStartOf="@id/cart_value"
+            app:layout_constraintBottom_toTopOf="@id/list_cart"
+            android:layout_marginVertical="20dp"
+            android:layout_marginStart="20dp"
             android:gravity="center"/>
 
-        <ImageButton
-            android:id="@+id/confirm_delete_cart"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:contentDescription="@string/Confirm_delete_cart"
-            android:src="@drawable/ic_check_blue"
-            android:background="@android:color/transparent"
-            android:scaleType="centerCrop"
-            android:onClick="@{() -> mainVM.confirmDelete()}"
-            app:layout_constraintTop_toTopOf="@id/Cart_title"
-            app:layout_constraintStart_toEndOf="@id/Cart_title"
+        <TextView
+            android:id="@+id/cart_value"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            tools:text="Giá trị giỏ hàng"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:textSize="18sp"
+            android:textColor="@color/white"
+            android:gravity="center_vertical|end"
+            app:layout_constraintStart_toEndOf="@id/cart_title"
             app:layout_constraintEnd_toStartOf="@id/create_order"
-            app:layout_constraintBottom_toBottomOf="@id/Cart_title"
-            android:layout_marginEnd="10dp"/>
+            app:layout_constraintBottom_toBottomOf="@id/cart_title"
+            app:layout_constraintTop_toTopOf="@id/cart_title"
+            android:layout_marginHorizontal="10dp"/>
 
         <ImageButton
             android:id="@+id/create_order"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:contentDescription="@string/Create_bill"
-            android:src="@drawable/ic_create_bill"
-            android:background="@android:color/transparent"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:src="@drawable/ic_create_bill_white"
+            android:background="@drawable/background_white_rectangle_5dp_4_corners_1dp_blue_stroke"
             android:scaleType="centerCrop"
-            android:onClick="@{() -> mainVM.createOrder()}"
-            app:layout_constraintTop_toTopOf="@id/Cart_title"
-            app:layout_constraintStart_toEndOf="@id/confirm_delete_cart"
-            app:layout_constraintBottom_toBottomOf="@id/Cart_title"
+            android:layout_marginEnd="20dp"
+            android:onClick="@{()-> mainVM.createOrder()}"
+            android:contentDescription="@string/Create_order"
+            app:layout_constraintStart_toEndOf="@id/cart_value"
+            app:layout_constraintTop_toTopOf="@id/cart_title"
             app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginEnd="20dp"/>
+            app:layout_constraintBottom_toBottomOf="@id/cart_title"/>
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/list_cart"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:background="@drawable/background_white_rectangle_20dp_topleft_topright_corners"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/Cart_title"
+            app:layout_constraintTop_toBottomOf="@id/cart_title"
             app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/item_cart"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:layout_marginHorizontal="20dp"
-            android:layout_marginVertical="30dp"/>
+            android:paddingHorizontal="20dp"
+            android:paddingTop="10dp"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

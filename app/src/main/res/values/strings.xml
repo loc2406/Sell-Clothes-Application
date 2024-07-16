@@ -32,7 +32,7 @@
     <string name="Cancel_add_cart">Hủy thêm</string>
     <string name="Remove_clothes">Xóa quần áo</string>
     <string name="Create_bill">Tạo đơn hàng</string>
-    <string name="Quality_regex">x%d</string>
+    <string name="Quantity_regex">x%d</string>
     <string name="Size_regex">Size: %s</string>
     <string name="Confirm_delete_cart">Xác nhận xóa đơn hàng</string>
     <string name="Bill">Thanh toán</string>
@@ -79,4 +79,5 @@
     <string name="Quantity_title">"Số lượng: "</string>
     <string name="plus">+</string>
     <string name="sub">-</string>
+    <string name="Sum_title">"Tổng: "</string>
 </resources>

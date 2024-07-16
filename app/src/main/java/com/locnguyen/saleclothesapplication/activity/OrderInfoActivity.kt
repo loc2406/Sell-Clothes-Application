@@ -124,7 +124,6 @@ class OrderInfoActivity : AppCompatActivity() {
                                 "Đã tạo đơn hàng thành công!",
                                 Toast.LENGTH_SHORT
                             ).show()
-                            CartFragment.clearCart()
                             finish()
                         }
 

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout>
     <data>
-
     </data>
     <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
@@ -12,22 +11,12 @@
         android:padding="10dp"
         android:layout_marginTop="20dp">
 
-        <CheckBox
-            android:id="@+id/checkbox"
-            android:layout_width="32dp"
-            android:layout_height="32dp"
-            android:buttonTint="@color/blue"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
-
         <androidx.cardview.widget.CardView
             android:id="@+id/img_space"
             android:layout_width="60dp"
             android:layout_height="60dp"
             app:cardCornerRadius="100dp"
-            android:layout_marginStart="10dp"
-            app:layout_constraintStart_toEndOf="@id/checkbox"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent"
             app:layout_constraintBottom_toBottomOf="parent">
 
@@ -63,20 +52,67 @@
             tool:text="x1"
             android:textSize="14sp"
             android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toTopOf="@id/name"
             app:layout_constraintStart_toEndOf="@id/name"
+            app:layout_constraintBottom_toBottomOf="@id/name"
             app:layout_constraintEnd_toEndOf="parent" />
 
         <TextView
             android:id="@+id/size"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             tool:text="Size quần áo"
             android:textSize="14sp"
             android:textColor="@color/black"
             app:layout_constraintStart_toStartOf="@id/name"
+            android:lines="1"
+            android:ellipsize="end"
             app:layout_constraintTop_toBottomOf="@id/name"
-            android:layout_marginTop="5dp"/>
+            app:layout_constraintEnd_toStartOf="@id/decrease_quantity"
+            android:layout_marginTop="5dp"
+            android:layout_marginEnd="5dp"/>
+
+        <TextView
+            android:id="@+id/increase_quantity"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:text="@string/plus"
+            android:fontFamily="@font/tinos_bold"
+            android:textSize="11sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/background_increase_clothes_quantity_btn"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/size"
+            app:layout_constraintBottom_toBottomOf="@id/size"/>
+
+        <TextView
+            android:id="@+id/clothes_quantity_value"
+            android:layout_width="wrap_content"
+            android:layout_height="20dp"
+            android:textSize="11sp"
+            android:textColor="@color/black"
+            android:gravity="center"
+            android:background="@drawable/background_white_rectangle_1dp_blue_stroke"
+            android:paddingHorizontal="10dp"
+            app:layout_constraintEnd_toStartOf="@id/increase_quantity"
+            app:layout_constraintTop_toTopOf="@id/size"
+            app:layout_constraintBottom_toBottomOf="@id/size"/>
+
+        <TextView
+            android:id="@+id/decrease_quantity"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:text="@string/sub"
+            android:fontFamily="@font/tinos_bold"
+            android:textSize="11sp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:background="@drawable/background_decrease_clothes_quantity_btn"
+            app:layout_constraintEnd_toStartOf="@id/clothes_quantity_value"
+            app:layout_constraintTop_toTopOf="@id/size"
+            app:layout_constraintStart_toEndOf="@id/size"
+            app:layout_constraintBottom_toBottomOf="@id/size"/>
 
         <TextView
             android:id="@+id/color_title"
@@ -127,7 +163,8 @@
             android:gravity="center_vertical|end"
             app:layout_constraintStart_toEndOf="@id/color_space"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"/>
+            app:layout_constraintTop_toTopOf="@id/color_title"
+            app:layout_constraintBottom_toBottomOf="@id/color_title"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

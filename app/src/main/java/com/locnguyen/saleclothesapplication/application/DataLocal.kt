@@ -4,6 +4,7 @@ import android.content.Context
 import android.content.SharedPreferences
 import android.provider.ContactsContract.Data
 import android.widget.ImageView
+import android.widget.Toast
 import androidx.core.content.edit
 import com.bumptech.glide.Glide
 import com.locnguyen.saleclothesapplication.R
@@ -85,5 +86,9 @@ class DataLocal{
             .load(img)
             .error(R.drawable.ic_loading_err)
             .into(view)
+    }
+
+    fun showToast(context: Context, message: String){
+        Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
     }
 }

@@ -12,13 +12,14 @@ data class SellClothes(
     var price: Long = 0,
     var quantity: Long = 0
 ) {
-    fun isSameType(clothes: SellClothes): Boolean {
+    fun isSameTypeWithoutQuantity(clothes: SellClothes): Boolean {
         return img == clothes.img &&
                 name == clothes.name &&
                 group == clothes.group &&
                 description == clothes.description &&
                 color == clothes.color &&
                 size == clothes.size &&
-                price == clothes.price
+                price == clothes.price &&
+                quantity != clothes.quantity
     }
 }

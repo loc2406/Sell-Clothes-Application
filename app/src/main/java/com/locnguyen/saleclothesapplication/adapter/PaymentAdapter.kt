@@ -40,7 +40,7 @@ class PaymentAdapter(private var list: List<SellClothes>) : RecyclerView.Adapter
 
         holder.bindImg(context, data.img)
         holder.binding.clothesInfo.text = context.getString(R.string.Clothes_info_regex, data.name, data.size, data.color.name)
-        holder.binding.quality.text = context.getString(R.string.Quality_regex, data.quantity)
+        holder.binding.quality.text = context.getString(R.string.Quantity_regex, data.quantity)
 
         val numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY)
         val formattedPrice= numberFormat.format(data.price)

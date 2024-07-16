@@ -433,7 +433,7 @@ class ClothesInfoActivity : AppCompatActivity() {
     }
 
     private fun handleAddToCart() {
-        if (selectedImg.isEmpty() || selectedSize.isEmpty()|| clothesInfoVM.clothesQuantity.value!!.toInt() == 0) {
+        if (selectedImg.isEmpty() || selectedSize.isEmpty()) {
             Toast.makeText(this, "Vui lòng chọn đầy đủ thông tin sản phẩm!", Toast.LENGTH_SHORT)
                 .show()
         } else {
@@ -462,16 +462,16 @@ class ClothesInfoActivity : AppCompatActivity() {
                             true -> clothesInfoVM.updateClothesQuantity("${newSellClothes.name}, màu ${newSellClothes.color.name}, size ${newSellClothes.size}", newSellClothes.quantity)
                                 .observe(this){ isUpdated ->
                                 when(isUpdated){
-                                    true -> showToast("Đã thêm giỏ hàng thành công!")
-                                    false -> showToast("Đã thêm giỏ hàng thất bại!")
+                                    true -> DataLocal.getInstance().showToast(this, "Đã thêm giỏ hàng thành công!")
+                                    false -> DataLocal.getInstance().showToast(this, "Đã thêm giỏ hàng thất bại!")
                                 }
                             }
 
                             false -> clothesInfoVM.addClothesToCart(newSellClothes)
                                 .observe(this) { isAdded ->
                                     when (isAdded) {
-                                        true -> showToast("Đã thêm giỏ hàng thành công!")
-                                        false -> showToast("Đã thêm giỏ hàng thất bại!")
+                                        true -> DataLocal.getInstance().showToast(this, "Đã thêm giỏ hàng thành công!")
+                                        false -> DataLocal.getInstance().showToast(this, "Đã thêm giỏ hàng thất bại!")
                                     }
                                 }
                         }
@@ -524,13 +524,5 @@ class ClothesInfoActivity : AppCompatActivity() {
                 selectedColorView?.setImageDrawable(null)
             }
         }
-    }
-
-    private fun showToast(message: String){
-        Toast.makeText(
-            this,
-            message,
-            Toast.LENGTH_SHORT
-        ).show()
     }
 }

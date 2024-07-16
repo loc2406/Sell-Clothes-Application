@@ -1,32 +1,64 @@
 package com.locnguyen.saleclothesapplication.adapter
 
-import android.content.Context
 import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
-import android.view.View.GONE
-import android.view.View.VISIBLE
 import android.view.ViewGroup
-import androidx.core.content.res.ResourcesCompat
+import androidx.appcompat.app.AlertDialog
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.MutableLiveData
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.locnguyen.saleclothesapplication.R
+import com.locnguyen.saleclothesapplication.application.DataLocal
 import com.locnguyen.saleclothesapplication.databinding.ItemCartBinding
 import com.locnguyen.saleclothesapplication.model.SellClothes
-import java.text.NumberFormat
-import java.util.Locale
 
-class CartAdapter(private var list: List<SellClothes>) : RecyclerView.Adapter<CartAdapter.CartVH>(){
-
-    private var deleteState: Boolean = false
-    private val deleteList: ArrayList<SellClothes> by lazy {ArrayList()}
+class CartAdapter(private var list: List<SellClothes>, private val lifecycleOwner: LifecycleOwner) : RecyclerView.Adapter<CartAdapter.CartVH>(){
+    var orderList: MutableLiveData<List<SellClothes>> = MutableLiveData(emptyList())
+    var removeFromCart: MutableLiveData<SellClothes> = MutableLiveData()
 
     class CartVH(val binding: ItemCartBinding): RecyclerView.ViewHolder(binding.root){
-        fun bindImg(context: Context, img: String) {
-            Glide.with(context)
-                .load(img)
-                .placeholder(R.drawable.ic_loading)
-                .error(R.drawable.ic_loading_err)
-                .into(binding.img)
+        val itemQuantity: MutableLiveData<Long> = MutableLiveData()
+
+        fun setTotalPrice(price: Long) {
+            val numberFormat = DataLocal.getInstance().priceFormat
+            binding.price.text = binding.root.context.getString(R.string.Price_regex, numberFormat.format(price * itemQuantity.value!!))
+        }
+
+        fun increase1ForQuantity(){
+            itemQuantity.value = itemQuantity.value?.plus(1)
+        }
+
+        fun decrease1ForQuantity(){
+            itemQuantity.value = itemQuantity.value?.minus(1)
+        }
+
+        fun disableDecrease(){
+            binding.decreaseQuantity.apply {
+                alpha = 0.3f
+                isClickable = false
+            }
+        }
+
+        fun enableDecrease(){
+            binding.decreaseQuantity.apply {
+                alpha = 1f
+                isClickable = true
+            }
+        }
+
+        fun disableIncrease(){
+            binding.increaseQuantity.apply {
+                alpha = 0.3f
+                isClickable = false
+            }
+        }
+
+        fun enableIncrease(){
+            binding.increaseQuantity.apply {
+                alpha = 1f
+                isClickable = true
+            }
         }
     }
 
@@ -40,55 +72,77 @@ class CartAdapter(private var list: List<SellClothes>) : RecyclerView.Adapter<Ca
 
     override fun onBindViewHolder(holder: CartVH, position: Int) {
         val data = list[position]
+        val copiedData = data.copy()
         val context = holder.binding.root.context
 
-        holder.bindImg(context, data.img)
-
-        if (deleteState){
-            holder.binding.checkbox.visibility = VISIBLE
+        holder.binding.apply {
+            DataLocal.getInstance().bindImg(context, data.img, img)
+            name.text = data.name
+            quantity.text = context.getString(R.string.Quantity_regex, data.quantity)
+            size.text = context.getString(R.string.Size_regex, data.size)
+            color.setBackgroundColor(Color.parseColor(data.color.hexCode))
         }
-        else{
-            holder.binding.checkbox.apply {
-                visibility = GONE
-                isChecked = false
+
+        holder.itemQuantity.value = data.quantity
+        orderList.value = orderList.value!!.plus(copiedData)
+
+        holder.itemQuantity.observe(lifecycleOwner) { quantity ->
+            holder.binding.clothesQuantityValue.text = quantity.toString()
+
+           when(quantity){
+               0L -> {
+                   holder.disableDecrease()
+               }
+
+               data.quantity -> {
+                   holder.disableIncrease()
+               }
+
+               else -> {
+                   holder.enableIncrease()
+                   holder.enableDecrease()
+               }
+           }
+
+            holder.setTotalPrice(copiedData.price)
+            updateClothesQuantity(copiedData, quantity)
+        }
+
+        holder.binding.decreaseQuantity.setOnClickListener {
+            if (holder.itemQuantity.value!! > 0){
+                holder.decrease1ForQuantity()
             }
         }
 
-        holder.binding.checkbox.setOnCheckedChangeListener { buttonView, isChecked ->
-            if (isChecked){
-                deleteList.add(data)
-            }
-            else{
-                deleteList.remove(data)
+        holder.binding.increaseQuantity.setOnClickListener {
+            if (holder.itemQuantity.value!! < data.quantity){
+                holder.increase1ForQuantity()
             }
         }
 
-        holder.binding.name.text = data.name
-        holder.binding.quantity.text = context.getString(R.string.Quality_regex, data.quantity)
-        holder.binding.size.text = context.getString(R.string.Size_regex, data.size)
-        holder.binding.color.setBackgroundColor(Color.parseColor(data.color.hexCode))
-
-        val numberFormat = NumberFormat.getNumberInstance(Locale.GERMANY)
-        val formattedNumber = numberFormat.format(data.price)
-        holder.binding.price.text = context.getString(R.string.Price_regex, formattedNumber)
+        holder.binding.root.setOnLongClickListener {
+            removeFromCart.value = data
+            return@setOnLongClickListener true
+        }
 
         holder.binding.executePendingBindings()
     }
 
+    private fun updateClothesQuantity(updateClothes: SellClothes, newQuantity: Long) {
+        val currentOrderList = orderList.value!!
+
+        currentOrderList.forEach { clothes ->
+            if (clothes == updateClothes){
+                clothes.quantity = newQuantity
+            }
+        }
+
+        orderList.value = currentOrderList
+    }
+
     fun setList(list: List<SellClothes>){
         this.list = list
-        notifyDataSetChanged()
-    }
-
-    fun getList() = this.list
-
-    fun setDeleteState(state: Boolean){
-        this.deleteState = state
-        notifyDataSetChanged()
-    }
-
-    fun deleteClothesFromCart() {
-        this.list -= deleteList.toSet()
+        orderList.value = emptyList()
         notifyDataSetChanged()
     }
 }

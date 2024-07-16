@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.locnguyen.saleclothesapplication.model.Order
+import com.locnguyen.saleclothesapplication.model.SellClothes
 import com.locnguyen.saleclothesapplication.repo.UserRepo
 
 class MainVM: ViewModel() {
@@ -25,19 +26,9 @@ class MainVM: ViewModel() {
 
     val listOrder: LiveData<List<Order>> = userRepo.getListOrder()
 
+    val listClothesInCart: LiveData<List<SellClothes>> by lazy { userRepo.getListClothesInCart()}
+
     val user = userRepo.getUserInfo()
-
-    fun setDeleteState(){
-        _deleteState.value = (deleteState.value != true)
-    }
-
-    fun offDeleteState(){
-        _deleteState.value = false
-    }
-
-    fun confirmDelete(){
-        _confirmDelete.value = true
-    }
 
     fun createOrder(){
         _createOrder.value = true
@@ -53,5 +44,9 @@ class MainVM: ViewModel() {
 
     fun logout(){
         logout.value = true
+    }
+
+    fun removeFromCart(clothes: SellClothes) : LiveData<Boolean> {
+        return userRepo.removeFromCart(clothes)
     }
 }
