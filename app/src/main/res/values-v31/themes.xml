@@ -8,7 +8,9 @@
     </style>
 
     <style name="MySplashScreen" parent="Theme.SplashScreen" >
-        <item name="android:windowBackground">@drawable/splash_background</item>
+        <item name="postSplashScreenTheme">@style/Theme.SaleClothesApplication</item>
+        <item name="android:windowSplashScreenAnimatedIcon">@drawable/logo</item>
+        <item name="android:windowSplashScreenBackground">@color/blue</item>
     </style>
 
     <style name="MyProgressBar" parent="Widget.AppCompat.ProgressBar">

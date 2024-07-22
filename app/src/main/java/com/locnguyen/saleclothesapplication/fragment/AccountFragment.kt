@@ -62,7 +62,7 @@ class AccountFragment: Fragment() {
 
         binding.apply {
             name.text = user.name.ifEmpty { "Đặt tên" }
-            phone.text = if (user.phone.toInt() == 0) "Đặt số điện thoại" else "0${user.phone}"
+            phone.text = user.phone.ifEmpty { "Đặt số điện thoại" }
             email.text = user.email.ifEmpty { "Đặt email" }
             address.text = user.location.ifEmpty { "Đặt địa chỉ" }
         }

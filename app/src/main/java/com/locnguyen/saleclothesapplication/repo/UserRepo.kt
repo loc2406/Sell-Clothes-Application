@@ -2,8 +2,11 @@ package com.locnguyen.saleclothesapplication.repo
 
 import android.provider.ContactsContract.Data
 import android.renderscript.Sampler.Value
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.Task
+import com.google.android.gms.tasks.Tasks
 import com.google.android.material.color.utilities.QuantizerCelebi
 import com.locnguyen.saleclothesapplication.application.DataLocal
 import com.locnguyen.saleclothesapplication.model.Order
@@ -29,6 +32,9 @@ class UserRepo {
     private val userCartRef: DatabaseReference =
         Firebase.database.getReference("List users").child(DataLocal.getInstance().getUserId())
             .child("Cart")
+    private val userOrdersRef: DatabaseReference =
+        Firebase.database.getReference("List users").child(DataLocal.getInstance().getUserId())
+            .child("Orders")
 
     fun isLoggedIn(email: String, password: String): LiveData<Pair<Boolean, String>> {
         val isLoggedIn: MutableLiveData<Pair<Boolean, String>> = MutableLiveData()
@@ -156,8 +162,7 @@ class UserRepo {
     fun createOrder(order: Order): LiveData<Boolean> {
         val isCreated: MutableLiveData<Boolean> = MutableLiveData()
 
-        listUsersInfoRef.child(DataLocal.getInstance().getUserId()).child("List orders")
-            .child(order.id)
+        userOrdersRef.child(order.id)
             .setValue(order)
             .addOnSuccessListener {
                 isCreated.value = true
@@ -173,8 +178,7 @@ class UserRepo {
         val listLD: MutableLiveData<List<Order>> = MutableLiveData(emptyList())
         val list = mutableListOf<Order>()
 
-        listUsersInfoRef.child(DataLocal.getInstance().getUserId()).child("List orders")
-            .addValueEventListener(object : ValueEventListener {
+        userOrdersRef.addValueEventListener(object : ValueEventListener {
                 override fun onDataChange(snapshot: DataSnapshot) {
                     if (snapshot.exists()) {
                         snapshot.children.forEach { orderSnapshot ->
@@ -338,6 +342,65 @@ class UserRepo {
         })
 
         return isRemoved
+    }
+
+    fun updateCartAfterOrder(listBoughtClothes: List<SellClothes>): LiveData<Boolean> {
+        val isUpdated: MutableLiveData<Boolean> = MutableLiveData()
+
+        userCartRef.addListenerForSingleValueEvent(object: ValueEventListener{
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val currentListClothes = ArrayList<SellClothes>()
+                val removeClothes = ArrayList<SellClothes>()
+
+                if (snapshot.hasChildren()){
+                    snapshot.children.forEach {clothesSnapshot ->
+                        val clothesValue = clothesSnapshot.getValue(SellClothes::class.java)
+
+                        clothesValue?.let{ currentListClothes.add(it) }
+                    }
+
+                    val updateTasks = ArrayList<Task<Void>>()
+
+                    listBoughtClothes.forEach { boughtClothes ->
+                        val boughtClothesInCart = currentListClothes.find{ clothes -> boughtClothes.isSameTypeButSmallerOrEqualQuantity(clothes) }
+
+                        boughtClothesInCart?.let{
+
+                            if (it.quantity - boughtClothes.quantity == 0L){
+                                removeClothes.add(it)
+                                updateTasks.add(userCartRef.child("${it.name}, màu ${it.color.name}, size ${it.size}").setValue(null))
+                            }
+                            else{
+                                it.quantity -= boughtClothes.quantity
+                            }
+                        }
+                    }
+
+                    currentListClothes.removeAll(removeClothes.toSet())
+
+                    currentListClothes.forEach{ updatedClothes ->
+                        updateTasks.add(userCartRef.child("${updatedClothes.name}, màu ${updatedClothes.color.name}, size ${updatedClothes.size}").setValue(updatedClothes))
+                    }
+
+                    Tasks.whenAll(updateTasks)
+                        .addOnSuccessListener {
+                            isUpdated.value = true
+                        }
+                        .addOnFailureListener {
+                            isUpdated.value = false
+                        }
+                }
+                else{
+                    isUpdated.value = true
+                }
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                isUpdated.value = false
+            }
+        })
+
+        return isUpdated
     }
 
 }

@@ -25,7 +25,7 @@ class EditInfoActivity: AppCompatActivity() {
         }
 
         binding.confirm.setOnClickListener {
-            val map = mapOf(Pair("name", binding.name.text.toString()), Pair("phone", Integer.parseInt(binding.phone.text.toString()).toLong()), Pair("location", binding.address.text.toString()))
+            val map = mapOf(Pair("name", binding.name.text.toString()), Pair("phone", binding.phone.text.toString()), Pair("location", binding.address.text.toString()))
 
             userRepo.update(map).observe(this){ isUpdated ->
                 when(isUpdated){

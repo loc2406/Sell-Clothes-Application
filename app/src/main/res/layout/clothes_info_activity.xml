@@ -59,7 +59,7 @@
                     android:contentDescription="@string/Back"
                     android:onClick="@{() -> clothesInfoVM.back()}"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_back"
+                    android:src="@drawable/ic_back_blue"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -603,6 +603,7 @@
             app:layout_constraintStart_toEndOf="@id/add_cart"
             app:layout_constraintTop_toBottomOf="@id/content_space"
             tool:text="Giá quần áo" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

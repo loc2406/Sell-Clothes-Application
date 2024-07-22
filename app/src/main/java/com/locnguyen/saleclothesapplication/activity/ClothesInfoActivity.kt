@@ -240,9 +240,9 @@ class ClothesInfoActivity : AppCompatActivity() {
 
     private fun getFromIntent(): Clothes? {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            intent.getSerializableExtra("CLOTHES", Clothes::class.java)
+            intent.getParcelableExtra("CLOTHES", Clothes::class.java)
         } else {
-            intent.getSerializableExtra("CLOTHES") as Clothes
+            intent.getParcelableExtra("CLOTHES")
         }
     }
 

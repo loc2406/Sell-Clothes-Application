@@ -1,10 +1,17 @@
 package com.locnguyen.saleclothesapplication.application
 
+import android.app.AlertDialog
 import android.content.Context
 import android.content.SharedPreferences
+import android.graphics.drawable.ColorDrawable
 import android.provider.ContactsContract.Data
+import android.view.View
+import android.view.View.GONE
 import android.widget.ImageView
+import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.content.res.AppCompatResources
+import androidx.compose.ui.graphics.Color
 import androidx.core.content.edit
 import com.bumptech.glide.Glide
 import com.locnguyen.saleclothesapplication.R
@@ -81,14 +88,45 @@ class DataLocal{
             .into(view)
     }
 
-    fun bindImgWithoutPlaceHolder(context: Context, img: String, view: ImageView){
-        Glide.with(context)
-            .load(img)
-            .error(R.drawable.ic_loading_err)
-            .into(view)
-    }
-
     fun showToast(context: Context, message: String){
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show()
+    }
+
+    fun getAlertDialog(context: Context, title: String, content: String, positive: String? = null, negative: String? = null, positiveAction: (() -> Unit)? = null, negativeAction: (() -> Unit)? = null): AlertDialog{
+        val dialogView = View.inflate(context, R.layout.my_custom_dialog, null)
+
+        val titleView = dialogView.findViewById<TextView>(R.id.dialog_title)
+        val contentView = dialogView.findViewById<TextView>(R.id.dialog_content)
+        val positiveView = dialogView.findViewById<TextView>(R.id.dialog_positive)
+        val negativeView = dialogView.findViewById<TextView>(R.id.dialog_negative)
+
+        title.let{ titleView?.text = it }
+        content.let{ contentView?.text = it }
+        positive?.let{ positiveView?.text = it }
+
+        if (negative!= null){
+            negativeView?.text = negative
+        }
+        else{
+            negativeView?.visibility = GONE
+        }
+
+        val dialog =  AlertDialog.Builder(context)
+            .setView(dialogView)
+            .setCancelable(false)
+            .create()
+
+        dialog.window?.setBackgroundDrawable(AppCompatResources.getDrawable(context, R.drawable.background_transparent_rectangle))
+
+        positiveView?.setOnClickListener {
+            positiveAction?.invoke()
+            dialog.dismiss()
+        }
+        negativeView?.setOnClickListener {
+            negativeAction?.invoke()
+            dialog.dismiss()
+        }
+
+        return dialog
     }
 }

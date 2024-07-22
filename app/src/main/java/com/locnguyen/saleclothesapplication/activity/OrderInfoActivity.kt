@@ -1,6 +1,8 @@
 package com.locnguyen.saleclothesapplication.activity
 
+import android.os.Build
 import android.os.Bundle
+import android.text.Html
 import android.text.Spannable
 import android.text.SpannableStringBuilder
 import android.text.style.StyleSpan
@@ -12,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.locnguyen.saleclothesapplication.R
 import com.locnguyen.saleclothesapplication.adapter.PaymentAdapter
+import com.locnguyen.saleclothesapplication.application.DataLocal
 import com.locnguyen.saleclothesapplication.databinding.OrderInfoActivityBinding
 import com.locnguyen.saleclothesapplication.fragment.CartFragment
 import com.locnguyen.saleclothesapplication.model.Order
@@ -27,6 +30,7 @@ class OrderInfoActivity : AppCompatActivity() {
     private lateinit var binding: OrderInfoActivityBinding
     private lateinit var orderInfoVM: OrderInfoVM
     private lateinit var paymentAdapter: PaymentAdapter
+    private lateinit var listClothes: List<SellClothes>
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,6 +41,8 @@ class OrderInfoActivity : AppCompatActivity() {
         binding.lifecycleOwner = this
         binding.orderInfoVM = orderInfoVM
 
+        listClothes = getFromIntent()
+
         paymentAdapter = PaymentAdapter(listClothes)
 
         binding.listClothes.apply {
@@ -46,6 +52,14 @@ class OrderInfoActivity : AppCompatActivity() {
         }
 
         initObserves()
+    }
+
+    private fun getFromIntent(): List<SellClothes> {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU){
+            intent.getParcelableArrayListExtra("LIST_CLOTHES", SellClothes::class.java)?.toList() ?: emptyList()
+        }else{
+            intent.getParcelableArrayListExtra<SellClothes>("LIST_CLOTHES")?.toList() ?: emptyList()
+        }
     }
 
     private fun initObserves() {
@@ -95,7 +109,7 @@ class OrderInfoActivity : AppCompatActivity() {
     }
 
     private fun handleCreateOrder() {
-        val dialog = AlertDialog.Builder(this)
+        AlertDialog.Builder(this, R.style.MyAlertDialog)
             .setTitle("Xác nhận tạo đơn hàng")
             .setMessage("Bạn có chắc muốn tạo đơn hàng này chứ!")
             .setCancelable(false)
@@ -119,80 +133,26 @@ class OrderInfoActivity : AppCompatActivity() {
                 ).observe(this) { isCreated ->
                     when (isCreated) {
                         true -> {
-                            Toast.makeText(
-                                this,
-                                "Đã tạo đơn hàng thành công!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            finish()
+                            DataLocal.getInstance().showToast(this, "Đã tạo đơn hàng thành công!")
+
+                            orderInfoVM.updateCartAfterOrder(listClothes).observe(this){
+                                finish()
+                            }
                         }
 
-                        false -> {
-                            Toast.makeText(
-                                this,
-                                "Đã tạo đơn hàng thất bại!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            finish()
-                        }
+                        false -> DataLocal.getInstance().showToast(this, "Đã tạo đơn hàng thất bại!")
                     }
                 }
             }
             .show()
-
-        dialog.getButton(AlertDialog.BUTTON_NEGATIVE).setTextColor(getColor(R.color.blue))
-        dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(getColor(R.color.blue))
     }
 
     private fun bindInfo(user: User) {
         binding.apply {
-            val builder = SpannableStringBuilder()
-            val boldSpan = StyleSpan(android.graphics.Typeface.BOLD)
-
-            builder.append("Người nhận hàng: ")
-            var endTitle = builder.length
-            builder.append(user.name)
-
-            builder.setSpan(boldSpan, 0, endTitle, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            receiver.text = builder
-            builder.clear()
-
-            builder.append("Điện thoại: ")
-            endTitle = builder.length
-            builder.append(user.phone.toString())
-
-            builder.setSpan(boldSpan, 0, endTitle, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            phone.text = builder
-
-            builder.setSpan(boldSpan, 0, endTitle, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            receiver.text = builder
-            builder.clear()
-
-            builder.append("Địa chỉ nhận hàng: ")
-            endTitle = builder.length
-            builder.append(user.location)
-
-            builder.setSpan(boldSpan, 0, endTitle, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            address.text = builder
-
-            builder.setSpan(boldSpan, 0, endTitle, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            receiver.text = builder
-            builder.clear()
-
-            builder.append("Phương thức thanh toán: ")
-            endTitle = builder.length
-            builder.append("Tiền mặt")
-
-            builder.setSpan(boldSpan, 0, endTitle, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE)
-            paymentMethod.text = builder
-        }
-    }
-
-    companion object {
-        private var listClothes: List<SellClothes> = emptyList()
-
-        fun setListClothes(list: List<SellClothes>) {
-            listClothes = list
+            receiver.text = user.name
+            phone.text = Html.fromHtml(resources.getString(R.string.Receiver_phone_regex, user.phone), Html.FROM_HTML_MODE_LEGACY)
+            address.text = Html.fromHtml(resources.getString(R.string.Receiver_address_regex, user.location), Html.FROM_HTML_MODE_LEGACY)
+            paymentMethod.text = resources.getString(R.string.Money)
         }
     }
 }

@@ -77,7 +77,10 @@ class CartAdapter(private var list: List<SellClothes>, private val lifecycleOwne
 
         holder.binding.apply {
             DataLocal.getInstance().bindImg(context, data.img, img)
-            name.text = data.name
+            name.apply {
+                text = data.name
+                isSelected = true
+            }
             quantity.text = context.getString(R.string.Quantity_regex, data.quantity)
             size.text = context.getString(R.string.Size_regex, data.size)
             color.setBackgroundColor(Color.parseColor(data.color.hexCode))
@@ -92,10 +95,12 @@ class CartAdapter(private var list: List<SellClothes>, private val lifecycleOwne
            when(quantity){
                0L -> {
                    holder.disableDecrease()
+                   holder.enableIncrease()
                }
 
                data.quantity -> {
                    holder.disableIncrease()
+                   holder.enableDecrease()
                }
 
                else -> {

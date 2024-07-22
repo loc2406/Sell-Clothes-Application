@@ -1,258 +1,308 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tool="http://schemas.android.com/tools">
 
     <data>
+
         <variable
             name="orderInfoVM"
             type="com.locnguyen.saleclothesapplication.viewmodel.OrderInfoVM" />
     </data>
 
-    <ScrollView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:background="@color/blue">
 
-        <androidx.constraintlayout.widget.ConstraintLayout xmlns:app="http://schemas.android.com/apk/res-auto"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/btn_back"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginStart="20dp"
+            android:contentDescription="@string/Back"
+            android:onClick="@{() -> orderInfoVM.back()}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_back_white"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintEnd_toStartOf="@id/title"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title" />
 
-            <ImageButton
-                android:id="@+id/btn_back"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="20dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/Back"
-                android:scaleType="centerCrop"
-                android:src="@drawable/ic_back"
-                android:onClick="@{() -> orderInfoVM.back()}"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:fontFamily="@font/tinos_bold"
+            android:gravity="center"
+            android:text="@string/Bill"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            app:layout_constraintBottom_toTopOf="@id/order_info_space"
+            app:layout_constraintEnd_toStartOf="@id/btn_confirm_create_order"
+            app:layout_constraintStart_toEndOf="@id/btn_back"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <TextView
-                android:id="@+id/title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:fontFamily="@font/tinos_bold"
-                android:gravity="center"
-                android:text="@string/Bill"
-                android:textColor="@color/black"
-                android:textSize="20sp"
-                app:layout_constraintBottom_toBottomOf="@id/btn_back"
-                app:layout_constraintEnd_toStartOf="@id/btn_confirm_create_order"
-                app:layout_constraintStart_toEndOf="@id/btn_back"
-                app:layout_constraintTop_toTopOf="@id/btn_back" />
+        <ImageView
+            android:id="@+id/btn_confirm_create_order"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:layout_marginEnd="20dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/Create_order"
+            android:onClick="@{() -> orderInfoVM.confirmCreateOrder()}"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_check_white"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/title"
+            app:layout_constraintTop_toTopOf="@id/title" />
 
-            <ImageButton
-                android:id="@+id/btn_confirm_create_order"
-                android:layout_width="32dp"
-                android:layout_height="32dp"
-                android:layout_marginTop="20dp"
-                android:layout_marginEnd="20dp"
-                android:background="@android:color/transparent"
-                android:contentDescription="@string/Create_order"
-                android:scaleType="centerCrop"
-                android:onClick="@{() -> orderInfoVM.confirmCreateOrder()}"
-                android:src="@drawable/ic_check_blue"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/order_info_space"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/background_white_rectangle_20dp_topleft_topright_corners"
+            app:layout_constraintBottom_toTopOf="@id/total_money_space"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title">
 
-            <ImageView
-                android:id="@+id/ic_list_clothes_in_bill"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:contentDescription="@string/List_clothes_in_bill"
-                android:src="@drawable/ic_create_bill_white"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/title" />
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginHorizontal="20dp">
 
-            <TextView
-                android:id="@+id/list_clothes_in_bill_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/tinos_bold"
-                android:text="@string/List_clothes_in_bill"
-                android:textColor="@color/blue"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_list_clothes_in_bill"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ic_list_clothes_in_bill"
-                app:layout_constraintTop_toTopOf="@id/ic_list_clothes_in_bill" />
+                <ImageView
+                    android:id="@+id/ic_list_clothes_in_bill"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:contentDescription="@string/List_clothes_in_bill"
+                    android:src="@drawable/ic_create_bill_blue"
+                    app:layout_constraintBottom_toTopOf="@id/list_clothes"
+                    android:layout_marginTop="20dp"
+                    app:layout_constraintEnd_toStartOf="@id/list_clothes_in_bill_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@id/list_clothes"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginHorizontal="20dp"
-                android:layout_marginTop="20dp"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/ic_list_clothes_in_bill" />
+                <TextView
+                    android:id="@+id/list_clothes_in_bill_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:text="@string/List_clothes_in_bill"
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_list_clothes_in_bill"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_list_clothes_in_bill"
+                    app:layout_constraintTop_toTopOf="@id/ic_list_clothes_in_bill" />
 
-            <ImageView
-                android:id="@+id/ic_location_info"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:contentDescription="@string/Location_info"
-                android:src="@drawable/ic_location_blue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/list_clothes" />
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@id/list_clothes"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:scrollbars="none"
+                    android:nestedScrollingEnabled="false"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ic_list_clothes_in_bill"
+                    tool:itemCount="6"
+                    tool:listitem="@layout/item_payment" />
 
-            <TextView
-                android:id="@+id/location_info_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/tinos_bold"
-                android:text="@string/Location_info"
-                android:textColor="@color/blue"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_location_info"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ic_location_info"
-                app:layout_constraintTop_toTopOf="@id/ic_location_info" />
+                <ImageView
+                    android:id="@+id/ic_location_info"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/Location_info"
+                    android:src="@drawable/ic_location_blue"
+                    app:layout_constraintEnd_toStartOf="@id/location_info_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/list_clothes" />
 
-            <TextView
-                android:id="@+id/receiver"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@id/location_info_title"
-                app:layout_constraintStart_toStartOf="@id/location_info_title"
-                app:layout_constraintTop_toBottomOf="@id/location_info_title"
-                tool:text="Tên người nhận hàng" />
+                <TextView
+                    android:id="@+id/location_info_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:text="@string/Location_info"
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_location_info"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_location_info"
+                    app:layout_constraintTop_toTopOf="@id/ic_location_info" />
 
-            <TextView
-                android:id="@+id/phone"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@id/location_info_title"
-                app:layout_constraintStart_toStartOf="@id/location_info_title"
-                app:layout_constraintTop_toBottomOf="@id/receiver"
-                tool:text="Số điện thoại người nhận hàng" />
+                <RelativeLayout
+                    android:id="@+id/receiver_info_space"
+                    android:layout_width="0dp"
+                    android:padding="10dp"
+                    android:layout_marginTop="20dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/ic_location_info"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    android:background="@drawable/background_white_rectangle_blue_10dp_dash_stroke_10dp_radius">
 
-            <TextView
-                android:id="@+id/address"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@id/location_info_title"
-                app:layout_constraintStart_toStartOf="@id/location_info_title"
-                app:layout_constraintTop_toBottomOf="@id/phone"
-                tool:text="Địa chỉ người nhận hàng" />
+                    <TextView
+                        android:id="@+id/receiver"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="15sp"
+                        android:textAllCaps="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_toStartOf="@id/payment_method"
+                        android:fontFamily="@font/tinos_bold"
+                        android:lines="1"
+                        android:ellipsize="end"
+                        tool:text="Tên người nhận hàng" />
 
-            <TextView
-                android:id="@+id/payment_method"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toEndOf="@id/location_info_title"
-                app:layout_constraintStart_toStartOf="@id/location_info_title"
-                app:layout_constraintTop_toBottomOf="@id/address"
-                tool:text="Phương thức thanh toán" />
+                    <TextView
+                        android:id="@+id/phone"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:layout_marginTop="10dp"
+                        android:layout_below="@id/receiver"
+                        tool:text="Số điện thoại người nhận hàng" />
 
-            <ImageView
-                android:id="@+id/ic_payment_detail"
-                android:layout_width="24dp"
-                android:layout_height="24dp"
-                android:layout_marginStart="20dp"
-                android:layout_marginTop="30dp"
-                android:contentDescription="@string/Location_info"
-                android:src="@drawable/ic_money_blue"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/payment_method" />
+                    <TextView
+                        android:id="@+id/address"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="10dp"
+                        android:textColor="@color/black"
+                        android:textSize="13sp"
+                        android:layout_below="@id/phone"
+                        tool:text="Địa chỉ người nhận hàng" />
 
-            <TextView
-                android:id="@+id/payment_detail_title"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:layout_marginEnd="20dp"
-                android:fontFamily="@font/tinos_bold"
-                android:text="@string/Payment_detail"
-                android:textColor="@color/blue"
-                android:textSize="14sp"
-                app:layout_constraintBottom_toBottomOf="@id/ic_payment_detail"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/ic_payment_detail"
-                app:layout_constraintTop_toTopOf="@id/ic_payment_detail" />
+                    <TextView
+                        android:id="@+id/payment_method"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignTop="@id/receiver"
+                        android:layout_alignBottom="@id/receiver"
+                        android:gravity="center"
+                        android:textColor="@color/blue"
+                        android:textSize="13sp"
+                        android:fontFamily="@font/tinos_bold_italic"
+                        tool:text="Phương thức thanh toán" />
 
-            <TextView
-                android:id="@+id/total_clothes_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/Total_clothes_value"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toStartOf="@id/total_clothes_value"
-                app:layout_constraintStart_toStartOf="@id/payment_detail_title"
-                app:layout_constraintTop_toBottomOf="@id/payment_detail_title" />
+                </RelativeLayout>
 
-            <TextView
-                android:id="@+id/total_clothes_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/tinos_bold"
-                android:gravity="center_vertical|end"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@id/total_clothes_title"
-                app:layout_constraintEnd_toEndOf="@id/payment_detail_title"
-                app:layout_constraintStart_toEndOf="@id/total_clothes_title"
-                app:layout_constraintTop_toTopOf="@id/total_clothes_title"
-                tool:text="Tổng giá tiền" />
+                <ImageView
+                    android:id="@+id/ic_payment_detail"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginTop="20dp"
+                    android:contentDescription="@string/Location_info"
+                    android:src="@drawable/ic_money_blue"
+                    app:layout_constraintEnd_toStartOf="@id/payment_detail_title"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/receiver_info_space" />
 
-            <TextView
-                android:id="@+id/ship_money_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:text="@string/Ship_money_title"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintEnd_toStartOf="@id/ship_money_value"
-                app:layout_constraintStart_toStartOf="@id/payment_detail_title"
-                app:layout_constraintTop_toBottomOf="@id/total_clothes_title" />
+                <TextView
+                    android:id="@+id/payment_detail_title"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:text="@string/Payment_detail"
+                    android:textColor="@color/blue"
+                    android:textSize="15sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ic_payment_detail"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ic_payment_detail"
+                    app:layout_constraintTop_toTopOf="@id/ic_payment_detail" />
 
-            <TextView
-                android:id="@+id/ship_money_value"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="10dp"
-                android:fontFamily="@font/tinos_bold"
-                android:gravity="center_vertical|end"
-                android:textColor="@color/black"
-                android:textSize="12sp"
-                app:layout_constraintBottom_toBottomOf="@id/ship_money_title"
-                app:layout_constraintEnd_toEndOf="@id/payment_detail_title"
-                app:layout_constraintStart_toEndOf="@id/ship_money_title"
-                app:layout_constraintTop_toTopOf="@id/ship_money_title"
-                tool:text="Phí vận chuyển" />
+                <TextView
+                    android:id="@+id/total_clothes_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/Total_clothes_value"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    app:layout_constraintEnd_toStartOf="@id/total_clothes_value"
+                    app:layout_constraintStart_toStartOf="@+id/ship_money_title"
+                    app:layout_constraintTop_toBottomOf="@id/ic_payment_detail" />
+
+                <TextView
+                    android:id="@+id/total_clothes_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:gravity="center_vertical|end"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="@id/total_clothes_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/total_clothes_title"
+                    app:layout_constraintTop_toTopOf="@id/total_clothes_title"
+                    tool:text="Tổng giá tiền" />
+
+                <TextView
+                    android:id="@+id/ship_money_title"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:text="@string/Ship_money_title"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    android:layout_marginBottom="10dp"
+                    app:layout_constraintEnd_toStartOf="@id/ship_money_value"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/total_clothes_title" />
+
+                <TextView
+                    android:id="@+id/ship_money_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:fontFamily="@font/tinos_bold"
+                    android:gravity="center_vertical|end"
+                    android:textColor="@color/black"
+                    android:textSize="13sp"
+                    app:layout_constraintBottom_toBottomOf="@id/ship_money_title"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toEndOf="@id/ship_money_title"
+                    app:layout_constraintTop_toTopOf="@id/ship_money_title"
+                    tool:text="Phí vận chuyển" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <LinearLayout
+            android:id="@+id/total_money_space"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:padding="10dp"
+            android:weightSum="10"
+            app:layout_constraintTop_toBottomOf="@id/order_info_space"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
 
             <TextView
                 android:id="@+id/total_money_title"
                 android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_marginStart="20dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_weight="5"
                 android:background="@drawable/background_total_money_title"
                 android:fontFamily="@font/tinos_bold"
                 android:gravity="center"
@@ -260,34 +310,25 @@
                 android:paddingVertical="10dp"
                 android:text="@string/Total_money_title"
                 android:textColor="@color/white"
-                android:textSize="16sp"
-                app:layout_constraintBottom_toBottomOf="@id/total_money_value"
-                app:layout_constraintEnd_toStartOf="@id/total_money_value"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="@id/total_money_value" />
+                android:textSize="16sp" />
 
             <TextView
                 android:id="@+id/total_money_value"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginEnd="20dp"
-                android:layout_marginVertical="50dp"
+                android:layout_weight="5"
                 android:background="@drawable/background_total_money_value"
+                android:ellipsize="end"
                 android:fontFamily="@font/tinos_bold"
                 android:gravity="center"
+                android:maxLines="2"
                 android:paddingHorizontal="20dp"
                 android:paddingVertical="10dp"
                 android:textColor="@color/black"
                 android:textSize="16sp"
-                android:maxLines="2"
-                android:ellipsize="end"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@id/total_money_title"
-                app:layout_constraintTop_toBottomOf="@id/ship_money_title"
-                app:layout_constraintBottom_toBottomOf="parent"
                 tool:text="Tổng thanh toán" />
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
 
-    </ScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

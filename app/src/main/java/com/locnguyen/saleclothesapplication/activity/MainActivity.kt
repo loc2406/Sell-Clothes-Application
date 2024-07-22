@@ -26,6 +26,7 @@ class MainActivity : AppCompatActivity() {
 
         binding.viewPager.apply {
             adapter = viewPagerAdapter
+            offscreenPageLimit = 4
 
             registerOnPageChangeCallback(object: OnPageChangeCallback(){
                 override fun onPageSelected(position: Int) {

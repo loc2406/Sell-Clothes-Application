@@ -80,4 +80,8 @@
     <string name="plus">+</string>
     <string name="sub">-</string>
     <string name="Sum_title">"Tổng: "</string>
+    <string name="Receiver_phone_regex"><![CDATA[<b>Số điện thoại:</b> %s]]></string>
+    <string name="Receiver_address_regex"><![CDATA[<b>Địa chỉ:</b> %s]]></string>
+    <string name="Money">Tiền mặt</string>
+    <string name="logo">Biểu tượng ứng dụng</string>
 </resources>

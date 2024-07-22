@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.locnguyen.saleclothesapplication.model.Order
+import com.locnguyen.saleclothesapplication.model.SellClothes
 import com.locnguyen.saleclothesapplication.model.User
 import com.locnguyen.saleclothesapplication.repo.UserRepo
 
@@ -27,5 +28,9 @@ class OrderInfoVM: ViewModel() {
 
     fun createOrder(order: Order): LiveData<Boolean> {
         return userRepo.createOrder(order)
+    }
+
+    fun updateCartAfterOrder(listBoughtClothes: List<SellClothes>): LiveData<Boolean> {
+        return userRepo.updateCartAfterOrder(listBoughtClothes)
     }
 }
