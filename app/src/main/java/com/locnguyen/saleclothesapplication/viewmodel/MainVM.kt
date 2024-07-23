@@ -3,6 +3,7 @@ package com.locnguyen.saleclothesapplication.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.locnguyen.saleclothesapplication.model.Clothes
 import com.locnguyen.saleclothesapplication.model.Order
 import com.locnguyen.saleclothesapplication.model.SellClothes
 import com.locnguyen.saleclothesapplication.repo.UserRepo
@@ -29,6 +30,8 @@ class MainVM: ViewModel() {
     val listClothesInCart: LiveData<List<SellClothes>> by lazy { userRepo.getListClothesInCart()}
 
     val user = userRepo.getUserInfo()
+
+    val watchClothesInfo: MutableLiveData<Clothes> = MutableLiveData()
 
     fun createOrder(){
         _createOrder.value = true

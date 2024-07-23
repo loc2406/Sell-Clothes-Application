@@ -84,4 +84,5 @@
     <string name="Receiver_address_regex"><![CDATA[<b>Địa chỉ:</b> %s]]></string>
     <string name="Money">Tiền mặt</string>
     <string name="logo">Biểu tượng ứng dụng</string>
+    <string name="Total_comments_reqex"><![CDATA[<b><font color="#1b67ff">Bình luận: </font></b><font color="#000000">%s bình luận.</font>]]></string>
 </resources>

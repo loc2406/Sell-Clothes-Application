@@ -16,8 +16,6 @@ class ClothesInfoVM: ViewModel() {
     private val _back: MutableLiveData<Boolean> by lazy {MutableLiveData(false)}
     val back: LiveData<Boolean> by lazy {_back}
 
-    val clothes: MutableLiveData<Clothes> by lazy { MutableLiveData() }
-
     private val _selectedColorId: MutableLiveData<Int> by lazy { MutableLiveData() }
     val selectedColorId: LiveData<Int> by lazy {_selectedColorId}
 

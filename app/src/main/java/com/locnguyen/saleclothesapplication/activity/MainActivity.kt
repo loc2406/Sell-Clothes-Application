@@ -1,83 +1,62 @@
 package com.locnguyen.saleclothesapplication.activity
 
 import android.os.Bundle
+import android.util.Log
+import androidx.activity.addCallback
 import androidx.appcompat.app.AppCompatActivity
-import androidx.databinding.DataBindingUtil
-import androidx.lifecycle.ViewModelProvider
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback
+import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
 import com.locnguyen.saleclothesapplication.R
-import com.locnguyen.saleclothesapplication.adapter.ViewPagerAdapter
+import com.locnguyen.saleclothesapplication.application.DataLocal
 import com.locnguyen.saleclothesapplication.databinding.MainActivityBinding
-import com.locnguyen.saleclothesapplication.viewmodel.MainVM
+import java.util.Timer
+import java.util.TimerTask
+import java.util.concurrent.Executor
+
 
 class MainActivity : AppCompatActivity() {
-
     private lateinit var binding: MainActivityBinding
-    private lateinit var mainVM: MainVM
-    private val viewPagerAdapter: ViewPagerAdapter by lazy { ViewPagerAdapter(this) }
+    private lateinit var navController: NavController
+    private var isPressedBackBefore: Boolean = false
+    private val timer: Timer by lazy {Timer()}
+    private val executor: Executor by lazy {ContextCompat.getMainExecutor(this)}
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        binding = MainActivityBinding.inflate(layoutInflater)
+        setTheme(R.style.Theme_SaleClothesApplication)
+        setContentView(binding.root)
 
-        binding = DataBindingUtil.setContentView(this, R.layout.main_activity)
-        mainVM = ViewModelProvider(this)[MainVM::class.java]
+        navController =
+            (supportFragmentManager.findFragmentById(R.id.nav_host_fragment) as NavHostFragment).navController
 
-        binding.lifecycleOwner = this
-
-        binding.viewPager.apply {
-            adapter = viewPagerAdapter
-            offscreenPageLimit = 4
-
-            registerOnPageChangeCallback(object: OnPageChangeCallback(){
-                override fun onPageSelected(position: Int) {
-                    super.onPageSelected(position)
-                    when(position){
-                        1 -> {
-                            binding.bottomNav.menu.findItem(R.id.bottom_nav_cart).setChecked(true)
-                        }
-
-                        2 -> {
-                            binding.bottomNav.menu.findItem(R.id.bottom_nav_order).setChecked(true)
-                        }
-
-                        3 -> {
-                            binding.bottomNav.menu.findItem(R.id.bottom_nav_account).setChecked(true)
-                        }
-
-                        else -> {
-                            binding.bottomNav.menu.findItem(R.id.bottom_nav_home).setChecked(true)
-                        }
+        onBackPressedDispatcher.addCallback {
+            if (::navController.isInitialized) {
+                if (!navController.popBackStack()) {
+                    if (isPressedBackBefore) {
+                        finish()
+                    } else {
+                        DataLocal.getInstance().showToast(this@MainActivity, "Nhấn 1 lần nữa để thoát ứng dụng")
+                        isPressedBackBefore = true
                     }
-                }
-            })
-        }
-
-        binding.bottomNav.setOnItemSelectedListener { item ->
-            when(item.itemId){
-                R.id.bottom_nav_home -> {
-                    binding.viewPager.currentItem = 0
-                }
-
-                R.id.bottom_nav_cart -> {
-                    binding.viewPager.currentItem = 1
-                }
-
-                R.id.bottom_nav_order -> {
-                    binding.viewPager.currentItem = 2
-                }
-
-                R.id.bottom_nav_account -> {
-                    binding.viewPager.currentItem = 3
+                } else {
+                    navController.navigateUp()
                 }
             }
 
-            return@setOnItemSelectedListener true
+            timer.schedule(object: TimerTask(){
+                override fun run() {
+                   executor.execute {
+                       isPressedBackBefore = false
+                   }
+                }
+            }, 3000)
         }
-
-        initObserves()
     }
 
-    private fun initObserves() {
-
+    override fun onDestroy() {
+        super.onDestroy()
+        timer.cancel()
     }
 }

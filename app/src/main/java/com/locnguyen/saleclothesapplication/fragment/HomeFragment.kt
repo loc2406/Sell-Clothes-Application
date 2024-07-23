@@ -1,8 +1,8 @@
 package com.locnguyen.saleclothesapplication.fragment
 
 import android.content.Intent
-import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,9 +10,10 @@ import android.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import androidx.recyclerview.widget.GridLayoutManager
 import com.locnguyen.saleclothesapplication.R
-import com.locnguyen.saleclothesapplication.activity.ClothesInfoActivity
 import com.locnguyen.saleclothesapplication.adapter.ClothesAdapter
 import com.locnguyen.saleclothesapplication.databinding.HomeFragmentBinding
 import com.locnguyen.saleclothesapplication.model.Clothes
@@ -25,9 +26,11 @@ import kotlin.collections.ArrayList
 class HomeFragment : Fragment() {
 
     private lateinit var binding: HomeFragmentBinding
-    private lateinit var mainVM: MainVM
-    private var itemClothesClicked: ((Clothes) -> Unit) = { clothes ->
-        handleItemClothesClicked(clothes)
+    private val mainVM: MainVM by lazy { ViewModelProvider(requireActivity())[MainVM::class.java] }
+    private val  itemClothesClicked: ((Clothes) -> Unit) by lazy {
+        { clothes ->
+            watchClothesInfo(clothes)
+        }
     }
     private val clothesAdapter: ClothesAdapter by lazy {
         ClothesAdapter(
@@ -337,9 +340,8 @@ class HomeFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         binding = DataBindingUtil.inflate(inflater, R.layout.home_fragment, container, false)
-        mainVM = ViewModelProvider(this)[MainVM::class.java]
 
-        binding.lifecycleOwner = this
+        binding.lifecycleOwner = viewLifecycleOwner
         binding.mainVM = mainVM
 
         return binding.root
@@ -388,9 +390,7 @@ class HomeFragment : Fragment() {
                 clothes.group.contains(keyword)
     }
 
-    private fun handleItemClothesClicked(clothes: Clothes) {
-        startActivity(Intent(requireContext(), ClothesInfoActivity::class.java).apply {
-            putExtra("CLOTHES", clothes)
-        })
+    private fun watchClothesInfo(clothes: Clothes){
+        mainVM.watchClothesInfo.value = clothes
     }
 }

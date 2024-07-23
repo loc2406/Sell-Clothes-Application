@@ -282,7 +282,6 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="30dp"
                     tool:text="@string/Comment_title"
-                    android:textColor="@color/blue"
                     android:textSize="14sp"
                     app:layout_constraintStart_toStartOf="@id/clothes_quantity_title"
                     app:layout_constraintTop_toBottomOf="@id/clothes_quantity_title" />
